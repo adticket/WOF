@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <table class="table table-responsive">
+        <thead>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Erstellt am</th>
+        <th>Letzte Änderung</th>
+        <th></th>
+        <th></th>
+        </thead>
+
+        <tbody>
+        {% for cat in categories %}
+            <tr>
+                <th>{{ cat.id }}</th>
+                <td>{{ cat.categoryName }}</td>
+                <td>{{ cat.createdAt|date('d.m.Y') }}</td>
+                <td>{{ cat.changedAt|date('d.m.Y') }}</td>
+                <td><!-- Change Button -->
+                    <button type="button" class="btn btn-warning" id="{{ cat.id }}" data-toggle="modal" data-target="#changeModal">Ändern</button>
+                </td>
+                <td><!-- Delete Button -->
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Löschen</button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- changeModal -->
+    <div class="modal fade" id="changeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" id="name" placeholder="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                    <button type="button" class="btn btn-success" id="saveChange">Speichern</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- deleteModal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Sicher das Sie die Kategorie: -placeholder- löschen möchten?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                    <button type="button" class="btn btn-danger" id="delete">Löschen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  -->
+    <script>
+
+    </script>
+
+{% endblock %}
+
+{% block description %}
+    Hier könnte <b>Ihre Werbung</b> stehen!
+{% endblock %}

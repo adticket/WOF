@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="panel panel-default">
+        <div class="panel-body">Dein Name: {{ firstname }}</div><a href="#" class="btn btn-success disabled">Ändern</a>
+        <div class="panel-footer clearfix">
+            <div class="pull-right">
+
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">Deine Mail: {{ mail }}</div><a href="#" class="btn btn-success disabled">Ändern</a>
+        <div class="panel-footer clearfix">
+            <div class="pull-right">
+
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        </div><a href="#" class="btn btn-danger disabled">Account Löschen</a>
+        <div class="panel-footer clearfix">
+            <div class="pull-right">
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block description %}
+    Deine Profildaten zum bearbeiten.
+{% endblock %}
