@@ -1,7 +1,6 @@
-WOL2
-====
+# Let's get started
 
-A Symfony project created on June 12, 2017, 1:24 pm.
+This Symfony project has started on June 12, 2017, (1:24pm) 13:24 o'clock.
 
 This is a trainee project from ADticket.
 
