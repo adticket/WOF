@@ -3,28 +3,18 @@
 {% block body %}
     <div class="panel panel-default">
         <div class="panel-body">Dein Name: {{ firstname }}</div><a href="#" class="btn btn-success disabled">Ändern</a>
-        <div class="panel-footer clearfix">
-            <div class="pull-right">
-
-            </div>
-        </div>
     </div>
     <div class="panel panel-default">
         <div class="panel-body">Deine Mail: {{ mail }}</div><a href="#" class="btn btn-success disabled">Ändern</a>
-        <div class="panel-footer clearfix">
-            <div class="pull-right">
-
-            </div>
-        </div>
     </div>
-    <div class="panel panel-default">
-        </div><a href="#" class="btn btn-danger disabled">Account Löschen</a>
-        <div class="panel-footer clearfix">
-            <div class="pull-right">
 
-            </div>
-        </div>
+    <div class="col-4 offset-4 needMargin">
+    <div class="alert alert-danger">
+        <center>Account löschen</center>
+        <a href="#" class="btn btn-danger btn-block disabled">Löschen</a>
     </div>
+    </div>
+
 
 {% endblock %}
 

@@ -2,13 +2,39 @@
 
 {% block body %}
 
-    {{ form_start(form) }}
-    {{ form_row(form.username) }}
-    {{ form_row(form.email) }}
-    {{ form_row(form.plainPassword.first) }}
-    {{ form_row(form.plainPassword.second) }}
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
 
-    <button type="submit">Register!</button>
+    {{ form_start(form) }}
+
+    <div class="container">
+        <div class="form-signin">
+            <h2 class="form-signin-heading">Registrieren</h2>
+        <div>
+            {{ form_errors(form.username) }}
+            {{ form_widget(form.username, {'attr': {'placeholder': 'Username'}}) }}
+        </div>
+        <div>
+            {{ form_errors(form.email) }}
+            {{ form_widget(form.email, {'attr': {'placeholder': 'E-Mail'}}) }}
+        </div>
+        <div>
+            {{ form_errors(form.plainPassword.first) }}
+            {{ form_widget(form.plainPassword.first, {'attr': {'placeholder': 'Passwort'}}) }}
+        </div>
+        <div>
+            {{ form_errors(form.plainPassword.second) }}
+            {{ form_widget(form.plainPassword.second, {'attr': {'placeholder': 'Passwort wiederholen'}}) }}
+        </div>
+        <button class="btn btn-primary btn-block" type="submit">Register!</button>
+        </div>
+
+    </div> <!-- /container -->
+
+
+
+
+
+
     {{ form_end(form) }}
 
 {% endblock %}
