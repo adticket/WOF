@@ -106,6 +106,9 @@ class User extends BaseUser
         return $this->created_at;
     }
 
-
+    public function getGroupIds()
+    {
+        var_dump(get_current_user());
+    }
 
 }
