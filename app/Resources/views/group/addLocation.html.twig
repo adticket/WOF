@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+    <h2 class="form-signin-heading">Location in {{ group.name }} anlegen</h2>
+
+    {{ form_start(form) }}
+    {{ form_row(form.locationName, { 'attr': {"placeholder":"placeholder"}, "label": "Name: " }) }}
+    {{ form_row(form.website, { 'attr': {"placeholder":"placeholder"}, "label": "Website: " }) }}
+    {{ form_row(form.street, { 'attr': {"placeholder":"placeholder"}, "label": "Straße: " }) }}
+    {{ form_row(form.house_no, { 'attr': {"placeholder":"placeholder"}, "label": "Haus Nr.: " }) }}
+    {{ form_row(form.postcode, { 'attr': {"placeholder":"placeholder"}, "label": "Plz: " }) }}
+    {{ form_row(form.city, { 'attr': {"placeholder":"placeholder"}, "label": "Stadt: " }) }}
+    <button class="btn btn-primary btn-block" type="submit">Erstellen!</button>
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block description %}
+    Erstelle deinen eigenen Account und sei Teil der Wheel Of Fortune Community!
+{% endblock %}
