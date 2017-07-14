@@ -2,7 +2,41 @@
 
 {% block body %}
 
-    <b>Alle Gruppen:</b>
+    <h2 class="form-signin-heading">Alle Gruppen</h2>
+
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th class="w-25">Name</th>
+            <th class="w-75">Beschreibung</th>
+            <th class="w-25">Besitzer</th>
+            <th class="w-25">Erstellt</th>
+            <th class="w-25">Beitreten</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for group in groups %}
+            <tr>
+                <td><a href="{{ path('group_details', { 'group': group.id }) }}">{{ group.name }}</a></td>
+                <td>{{ group.description }}</td>
+                <td>{{ group.createdBy }}</td>
+                <td>{{ group.createdAt|date('d.m.Y') }}</td>
+                <td>
+                    {% if group.id not in groups_for_user %}
+                        <a class="btn btn-outline-info btn-sm btn-block"
+                           href="{{ path('group_join', { 'group': group.id }) }}">Beitreten</a>
+                    {% else %}
+                        <a class="btn btn-outline-success btn-sm btn-block"
+                           href="{{ path('group_details', { 'group': group.id }) }}">Details</a>
+                    {% endif %}
+                </td>
+
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}
 
