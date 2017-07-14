@@ -106,8 +106,9 @@ class Location
      */
     private $categories;
 
-    public function __construct()
+    public function __construct(Group $getgroup = null)
     {
+        $this->group = $getgroup;
         $this->created_at = new \DateTime();
         $this->changed_at = new \DateTime();
         $this->created_by = get_current_user();
@@ -270,6 +271,54 @@ class Location
         $this->categories = $categories;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStreet()
+    {
+        return $this->street;
+    }
+
+    /**
+     * @param string $street
+     */
+    public function setStreet(string $street)
+    {
+        $this->street = $street;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHouseNo()
+    {
+        return $this->house_no;
+    }
+
+    /**
+     * @param string $house_no
+     */
+    public function setHouseNo(string $house_no)
+    {
+        $this->house_no = $house_no;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPostcode()
+    {
+        return $this->postcode;
+    }
+
+    /**
+     * @param string $postcode
+     */
+    public function setPostcode(string $postcode)
+    {
+        $this->postcode = $postcode;
     }
 
     /**
