@@ -43,6 +43,12 @@ class User extends BaseUser
     private $deleted_at;
 
     /**
+     * One User has Many Ratings!
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Rating", mappedBy="user")
+     */
+    private $rating;
+
+    /**
      * @return array
      */
     public function getRoles()
@@ -64,6 +70,7 @@ class User extends BaseUser
         $this->created_at = new \DateTime();
         $this->changed_at = new \DateTime();
         $this->groups = new ArrayCollection();
+        $this->rating = new ArrayCollection();
     }
 
     /**

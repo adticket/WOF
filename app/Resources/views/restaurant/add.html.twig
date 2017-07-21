@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+    {{ form_start(form) }}
+    {{ form_row(form.name, { 'attr': {"placeholder":"max. 50 Zeichen"}, "label": "Name des Restaurant: " }) }}
+    {{ form_row(form.categories, { 'attr': {"placeholder":""}, "label": "Kategorie: " }) }}
+    {{ form_row(form.website, { 'attr': {"placeholder":"www.restaurant.de"}, "label": "Webseite: " }) }}
+    {{ form_row(form.city, { 'attr': {"placeholder":""}, "label": "Stadt: " }) }}
+    {{ form_row(form.street, { 'attr': {"placeholder":"Musterstraße"}, "label": "Straße: " }) }}
+    {{ form_row(form.houseNo, { 'attr': {"placeholder":""}, "label": "Hausnummer: " }) }}
+    <button type="submit" class="btn btn-success">Hinzufügen</button>
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block description %}
+    Hier kannst du Restaurant hinzufügen. Um deine Restaurants anzusehen und zu bearbeiten klicke hier. [WIP]
+{% endblock %}

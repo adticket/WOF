@@ -20,10 +20,20 @@
                 <td>{{ cat.createdAt|date('d.m.Y') }}</td>
                 <td>{{ cat.changedAt|date('d.m.Y') }}</td>
                 <td><!-- Change Button -->
-                    <button type="button" class="btn btn-warning" id="{{ cat.id }}" data-toggle="modal" data-target="#changeModal">Ändern</button>
+                    <button type="button" class="btn btn-warning" id="{{ cat.id }}" data-toggle="modal"
+                            data-target="#changeModal">Umbenennen
+                    </button>
                 </td>
                 <td><!-- Delete Button -->
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Löschen</button>
+                    {% if cat.restaurants.count > 0 %}
+                        <button type="button" class="btn btn-danger btn-block disabled">
+                                In Benutzung
+                        </button>
+                    {% else %}
+                    <button type="button" class="btn btn-block btn-danger"
+                            data-toggle="modal" data-target="#deleteModal">Löschen
+                    </button>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
@@ -31,7 +41,8 @@
     </table>
 
     <!-- changeModal -->
-    <div class="modal fade" id="changeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="changeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -52,7 +63,8 @@
     </div>
 
     <!-- deleteModal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

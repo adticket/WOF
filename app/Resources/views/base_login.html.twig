@@ -6,15 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}WOF{% endblock %}</title>
-    <!-- take all local CSS (mainly Bootstrap) and combine them to one -> better perfomance -->
-    {% stylesheets 'css/*.css' filter='cssrewrite' output='css/compiled/app.css' %}
-    <link rel="stylesheet" href="{{ asset_url }}"/> {% endstylesheets %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+
 </head>
 
 <!-- in my overall is the color definition for the hole page -->
-<body class="overall">
-    {% include ':partials:navbar_login.html.twig' ignore missing %}
+<body class="overall-background">
 
 <div class="container-fluid">
     {% block body %}{% endblock %}
@@ -22,14 +22,9 @@
 
     {% include 'partials/footer_login.html.twig' ignore missing %}
 
+    <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 
-<!-- CDN Scripts -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
-
-<!-- take all local Javascripts and combine them to one -> better perfomance -->
-{% javascripts 'js/*.js' output='js/compiled/app.js' %}
-<script src="{{ asset_url }}"></script> {% endjavascripts %}
 </body>
 
 </html>

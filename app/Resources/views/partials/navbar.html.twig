@@ -1,42 +1,74 @@
 {% block navbar %}
+    <nav class="navbar navbar-default fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand">WOF</a>
+            </div>
 
-    <nav class="navbar navbar-inverse fixed-top bg-inverse navbar-toggleable-sm">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleCenteredNav" aria-controls="navbarsExampleCenteredNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse">
 
-        <div class="collapse navbar-collapse justify-content-md-center" id="loginNavbar">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('homepage') }}">Start<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('user_profile') }}">Profil</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('location_add') }}">AddRes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('category_add') }}">AddCat</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('location_list') }}">ListRes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('category_list') }}">ListCat</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('group_create') }}">CreateGroup</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('group_list') }}">ListGroup</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('logout') }}">Logout</a>
-                </li>
-            </ul>
-        </div>
+                {% set route = app.request.get('_route') %}
+                <ul class="nav navbar-nav">
+
+                    <li><a href="{{ path('homepage') }}">Start</a></li>
+
+                    <li class="{{ route starts with 'user' ? 'active' }}"><a
+                                href="{{ path('user_profile') }}">Profil</a></li>
+
+                    <li class="{{ route starts with 'group' ? 'active' }} dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Gruppe<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('group_create') }}">Erstellen</a></li>
+                            <li><a href="{{ path('group_list') }}">Alle anzeigen</a></li>
+                        </ul>
+                    </li>
+                    <li class="{{ route starts with 'restaurant' ? 'active' }} dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Restaurant<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('restaurant_add') }}">Hinzufügen</a></li>
+                            <li><a href="{{ path('restaurant_list') }}">Alle anzeigen</a></li>
+                        </ul>
+                    </li>
+                    <li class="{{ route starts with 'category' ? 'active' }} dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Kategorie<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('category_add') }}">Hinzufügen</a></li>
+                            <li><a href="{{ path('category_list') }}">Alle anzeigen</a></li>
+                        </ul>
+                    </li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <li class="{{ route starts with 'city' ? 'active' }} dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Stadt<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                                <li><a href="{{ path('city_add') }}">Hinzufügen</a></li>
+                            <li><a href="{{ path('city_list') }}">Alle anzeigen</a></li>
+                        </ul>
+                    </li> {% endif %}
+                </ul>
+
+
+                <ul class="nav navbar-nav navbar-right">
+                    <p class="navbar-text navbar-right">
+                        Angemeldet als <a href="{{ path('user_profile') }}"
+                                          class="navbar-link">"<b>{{ app.user.username }}</b>"</a>
+                    <li><a href="{{ path('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    </p>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
     </nav>
-
 
 {% endblock %}

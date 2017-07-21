@@ -3,6 +3,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Form\UserType;
 use AppBundle\Entity\User;
+use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,9 +25,9 @@ class RegisterController extends Controller
 
         // 2) handle the submit
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
 
-            var_dump($user);
             // 3) Encode the password
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
@@ -40,8 +41,9 @@ class RegisterController extends Controller
         }
 
         return $this->render(
-            'login/register.html.twig',
-            array('form' => $form->createView())
-        );
+            'login/register.html.twig', [
+                'form' => $form->createView(),
+                'error' => $error,
+                ]);
     }
 }

@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2 class="form-signin-heading">{{ group.name }}</h2>
+
+    <div class="row">
+        <div class="col-md-12">
+            <a href="#" class="btn btn-block disabled btn-lg btn-default">Essens Glückrad drehen!</a>
+            <a href="{{ path('group_listRestaurant', { 'group': group.id }) }}" class="btn btn-block btn-xs btn-info">Liste
+                bearbeiten</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="col-md-2">Name</th>
+                    <th class="col-md-3">Kategorien</th>
+                    <th class="col-md-2">Website</th>
+                    <th class="col-md-2">Straße</th>
+                    <th class="col-md-1">Hausnummer</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for restaurant in group.restaurants %}
+                    <tr>
+                        <td>{{ restaurant.name }}</td>
+                        <td>
+                            {% for cat in restaurant.categories.values %}
+                                <span class="label label-default">{{ cat.categoryName }}</span>
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% if 'http' not in restaurant.website %}
+                                <a href="http://{{ restaurant.website }}" target="_blank">{{ restaurant.website }}</a>
+                            {% else %}
+                                <a href="{{ restaurant.website }}" target="_blank">{{ restaurant.website }}</a>
+                            {% endif %}
+                        </td>
+                        <td>{{ restaurant.street }}</td>
+                        <td>{{ restaurant.houseNo }}</td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block description %}
+    <a class="btn btn-default btn-sm btn-block"
+       href="{{ path('group_list') }}">Zur Übersicht</a>
+    <a class="btn btn-danger btn-sm btn-block"
+       href="{{ path('group_left', { 'group': group.id }) }}">Gruppe verlassen</a>
+    <b>Name:</b> {{ group.name }}<br>
+    <b>Standort:</b> {{ group.city.cityName }}<br>
+    <b>Erstellt von:</b> {{ group.createdBy }}<br>
+    <b>Erstellt am:</b> {{ group.createdAt|date ('d.m.Y') }}<br>
+    <b>Beschreibung:</b> {{ group.description }}<br>
+{% endblock %}

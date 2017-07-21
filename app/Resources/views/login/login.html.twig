@@ -5,21 +5,26 @@
     {% if error %}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
-    <div class="container">
 
-        <form class="form-signin" action="{{ path('login') }}" method="post">
-            <h2 class="form-signin-heading">Please sign in</h2>
+    <div class="row">
+        <div class="col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-4 col-sm-5 col-sm-offset-2 col-lg-2 col-lg-offset-5">
+            <form class="form-signin" action="{{ path('login') }}" method="post">
+                <h2 class="form-signin-heading">Login</h2>
 
-            <label for="username" class="sr-only">Username</label>
-            <input type="text" id="username" class="form-control" placeholder="Username" name="_username" value="{{ last_username }}" autofocus>
+                <label for="username" class="sr-only">Username</label>
+                <input type="text" id="username" class="form-control" placeholder="Username" name="_username"
+                       value="{{ last_username }}" autofocus>
 
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="password" class="form-control" placeholder="Password" name="_password"  required>
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="password" class="form-control" placeholder="Password" name="_password"
+                       required>
 
-            <button class="btn btn-primary btn-block" type="submit">Log(me)in</button>
-        </form>
+                <button class="btn btn-primary btn-block" type="submit">Login</button>
+            </form>
+            <a class="btn btn-default btn-block" href="{{ path('register') }}" type="button">Registrieren</a>
+        </div>
+    </div>
 
-    </div> <!-- /container -->
 
 {% endblock %}
 

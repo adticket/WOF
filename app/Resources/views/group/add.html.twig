@@ -1,10 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
 
     {{ form_start(form) }}
     {{ form_row(form.name, { 'attr': {"placeholder":"max. 50 Zeichen"}, "label": "Gruppenname: " }) }}
     {{ form_row(form.description, { 'attr': {"placeholder":"max. 1000 Zeichen"}, "label": "Gruppenbeschreibung: " }) }}
+    {{ form_row(form.city, { 'attr': {"placeholder":""}, "label": "Stadt: " }) }}
     <button type="submit" class="btn btn-success">Hinzufügen</button>
     {{ form_end(form) }}
 

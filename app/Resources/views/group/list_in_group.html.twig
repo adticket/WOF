@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <b>Alle Restaurants:</b>
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Kategorien</th>
+            <th>Stadt</th>
+            <th>Website</th>
+            <th>Straße</th>
+            <th>Hausnummer</th>
+            <th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for restaurant in restaurants %}
+            <tr>
+                <td>{{ restaurant.name }}</td>
+                <td>
+                    {% for cat in restaurant.categories.values %}
+                        <span class="label label-default">{{ cat.categoryName }}</span>
+                    {% endfor %}
+                </td>
+                <td>{{ restaurant.city.cityName }}</td>
+                <td>
+                    {% if 'http' not in restaurant.website %}
+                        <a href="http://{{ restaurant.website }}" target="_blank">{{ restaurant.website }}</a>
+                    {% else %}
+                        <a href="{{ restaurant.website }}" target="_blank">{{ restaurant.website }}</a>
+                    {% endif %}
+                </td>
+                <td>{{ restaurant.street }}</td>
+                <td>{{ restaurant.houseNo }}</td>
+                <td>
+                    {% if restaurant not in group.restaurants %}
+                        <a class="btn btn-success btn-block btn-sm"
+                           href="{{ path('group_addRestaurant', { 'group': group.id, 'restaurant': restaurant.id }) }}">Hinzufügen</a>
+                    {% else %}
+                        <a class="btn btn-danger btn-block btn-sm"
+                           href="{{ path('group_removeRestaurant', { 'group': group.id, 'restaurant': restaurant.id }) }}">Entfernen</a>
+                    {% endif %}
+                </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block description %}
+    <a class="btn btn-default btn-sm btn-block"
+       href="{{ path('group_details', { 'group': group.id }) }}">Zurück</a>
+    Hier können Informationen stehen die wichtig sind!
+{% endblock %}
