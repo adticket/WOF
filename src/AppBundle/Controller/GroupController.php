@@ -99,9 +99,16 @@ class GroupController extends Controller
      */
     public function detailsAction(Group $group)
     {
-        return $this->render('group/details.html.twig', [
-            "group" => $group,
-        ]);
+        if ($this->isUserInGroup($group)) {
+            return $this->render('group/details.html.twig', [
+                "group" => $group,
+            ]);
+        }
+
+        $this->addFlash('error', 'Du kleiner Schlingel hast keine Erlaubnis dies zu tun!');
+
+        return new RedirectResponse($this->generateUrl('group_list'));
+
     }
 
     /**
@@ -113,43 +120,75 @@ class GroupController extends Controller
      */
     public function listRestaurantInGroupAction(Group $group, Request $request, EntityManagerInterface $em)
     {
-        $repository = $em->getRepository('AppBundle:Restaurant');
-        $restaurants = $repository->findBy([
-            'city' => $group->getCity()->getId(),
-        ]);
+        if ($this->isUserInGroup($group))
+        {
+            $repository = $em->getRepository('AppBundle:Restaurant');
+            $restaurants = $repository->findBy([
+                'city' => $group->getCity()->getId(),
+            ]);
 
-        return $this->render(':group:list_in_group.html.twig', [
-            "restaurants" => $restaurants,
-            "group" => $group,
-        ]);
+            return $this->render(':group:list_in_group.html.twig', [
+                "restaurants" => $restaurants,
+                "group" => $group,
+            ]);
+        }
+
+        $this->addFlash('error', 'Du kleiner Schlingel hast keine Erlaubnis dies zu tun!');
+
+        return new RedirectResponse($this->generateUrl('group_list'));
+
     }
 
     /**
-     * @Route("/group/restaurants/add/{group}+{restaurant}", methods={"GET"}, name="group_addRestaurant")
+     * @Route("/group/restaurants/add/{group}/{restaurant}", methods={"GET"}, name="group_addRestaurant")
      * @param Group $group
      * @param Restaurant $restaurant
      * @return RedirectResponse
      */
     public function addRestaurantAction(Restaurant $restaurant, Group $group)
     {
-        $group->addRestaurant($restaurant);
-        $this->getDoctrine()->getManager()->flush();
+        if ($this->isUserInGroup($group)) {
+            $group->addRestaurant($restaurant);
+            $this->getDoctrine()->getManager()->flush();
+            return new RedirectResponse($this->generateUrl('group_listRestaurant', ['group' => $group->getId()]));
+        }
 
-        return new RedirectResponse($this->generateUrl('group_listRestaurant', ['group' => $group->getId()]));
+        $this->addFlash('error', 'Du kleiner Schlingel hast keine Erlaubnis dies zu tun!');
+
+        return new RedirectResponse($this->generateUrl('group_list'));
     }
 
     /**
-     * @Route("/group/restaurants/remove/{group}+{restaurant}", methods={"GET"}, name="group_removeRestaurant")
+     * @Route("/group/restaurants/remove/{group}/{restaurant}", methods={"GET"}, name="group_removeRestaurant")
      * @param Restaurant $restaurant
      * @param Group $group
      * @return RedirectResponse
      */
     public function removeRestaurantAction(Restaurant $restaurant, Group $group)
     {
-        $group->removeRestaurant($restaurant);
-        $this->getDoctrine()->getManager()->flush();
+        if ($this->isUserInGroup($group)) {
+            $group->removeRestaurant($restaurant);
+            $this->getDoctrine()->getManager()->flush();
+            return new RedirectResponse($this->generateUrl('group_listRestaurant', ['group' => $group->getId()]));
+        }
 
-        return new RedirectResponse($this->generateUrl('group_listRestaurant', ['group' => $group->getId()]));
+        $this->addFlash('error', 'Du kleiner Schlingel hast keine Erlaubnis dies zu tun!');
+
+        return new RedirectResponse($this->generateUrl('group_list'));
+
     }
 
+    /**
+     * Check if the current user is in the given group
+     * @param Group $group
+     * @return bool
+     */
+    private function isUserInGroup(Group $group)
+    {
+        if ($group->getUsers()->contains($this->getUser())) {
+            return true;
+        }
+
+        return false;
+    }
 }
