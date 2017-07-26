@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Role\Role;
+use Symfony\Component\Security\Core\Role\RoleHierarchy;
 
 /**
  * Class CategoryController
@@ -21,7 +23,6 @@ class CategoryController extends Controller
      */
     public function listAction(Request $request, EntityManagerInterface $em)
     {
-
         $repository = $em->getRepository('AppBundle:Category');
         $categories = $repository->findAll();
 

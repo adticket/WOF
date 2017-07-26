@@ -24,41 +24,24 @@
                     <li class="{{ route starts with 'user' ? 'active' }}"><a
                                 href="{{ path('user_profile') }}">Profil</a></li>
 
-                    <li class="{{ route starts with 'group' ? 'active' }} dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">Gruppe<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ path('group_create') }}">Erstellen</a></li>
-                            <li><a href="{{ path('group_list') }}">Alle anzeigen</a></li>
-                        </ul>
-                    </li>
-                    <li class="{{ route starts with 'restaurant' ? 'active' }} dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">Restaurant<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ path('restaurant_add') }}">Hinzufügen</a></li>
-                            <li><a href="{{ path('restaurant_list') }}">Alle anzeigen</a></li>
-                        </ul>
-                    </li>
-                    <li class="{{ route starts with 'category' ? 'active' }} dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">Kategorie<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ path('category_add') }}">Hinzufügen</a></li>
-                            <li><a href="{{ path('category_list') }}">Alle anzeigen</a></li>
-                        </ul>
-                    </li>
-                    {% if is_granted('ROLE_ADMIN') %}
-                    <li class="{{ route starts with 'city' ? 'active' }} dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">Stadt<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                                <li><a href="{{ path('city_add') }}">Hinzufügen</a></li>
-                            <li><a href="{{ path('city_list') }}">Alle anzeigen</a></li>
-                        </ul>
-                    </li> {% endif %}
-                </ul>
+                    <li class="{{ route starts with 'group' ? 'active' }}"><a
+                                href="{{ path('group_list') }}">Gruppen</a></li>
 
+                    <li class="{{ route starts with 'restaurant' ? 'active' }}"><a
+                                href="{{ path('restaurant_list') }}">Restaurants</a></li>
+
+                    <li class="{{ route starts with 'category' ? 'active' }}"><a
+                                href="{{ path('category_list') }}">Kategorien</a></li>
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="{{ route starts with 'city' ? 'active' }}"><a
+                                    href="{{ path('city_list') }}">Städte</a></li>
+                    {% endif %}
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <li class="{{ route starts with 'admin' ? 'active' }}"><a
+                                    href="{{ path('admin_view') }}">Admin</a></li>
+                    {% endif %}
+                </ul>
 
                 <ul class="nav navbar-nav navbar-right">
                     <p class="navbar-text navbar-right">

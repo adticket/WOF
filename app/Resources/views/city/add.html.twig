@@ -6,11 +6,12 @@
 
     {{ form_start(form) }}
     {{ form_row(form.cityName, { 'attr': {"placeholder":"max. 50 Zeichen"}, "label": "Name der Stadt: " }) }}
-    <button type="submit" class="btn btn-success">Hinzufügen</button>
+    <button type="submit" class="btn btn-success">Eintragen</button>
     {{ form_end(form) }}
 
 {% endblock %}
 
 {% block description %}
-    Hier kannst du Kategorien hinzufügen. Um deine Kategorien anzusehen und zu bearbeiten klicke hier. [WIP]
+    <a class="btn btn-default btn-sm btn-block"
+       href="{{ path('city_list') }}">Abbrechen</a>
 {% endblock %}

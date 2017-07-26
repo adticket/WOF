@@ -6,11 +6,15 @@
 
     {{ form_start(form) }}
     {{ form_row(form.categoryName, { 'attr': {"placeholder":"max. 50 Zeichen"}, "label": "Kategoriename: " }) }}
-    <button type="submit" class="btn btn-success">Hinzufügen</button>
+    <button type="submit" class="btn btn-success">Eintragen</button>
     {{ form_end(form) }}
 
 {% endblock %}
 
 {% block description %}
-    Hier kannst du Kategorien hinzufügen. Um deine Kategorien anzusehen und zu bearbeiten klicke hier. [WIP]
+    <a class="btn btn-default btn-sm btn-block"
+       href="{{ path('category_list') }}">Abbrechen</a>
+    <br>
+    <p>Gib den Namen einer neuen Kategorie ein. Egal ob "Vegan" oder "Chinesisch" oder "Hamburger". Trage alles ein, was
+        du denkst, sinnvoll wäre um ein Restaurant zu beschreiben.</p>
 {% endblock %}

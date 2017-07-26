@@ -11,11 +11,15 @@
     {{ form_row(form.city, { 'attr': {"placeholder":""}, "label": "Stadt: " }) }}
     {{ form_row(form.street, { 'attr': {"placeholder":"Musterstraße"}, "label": "Straße: " }) }}
     {{ form_row(form.houseNo, { 'attr': {"placeholder":""}, "label": "Hausnummer: " }) }}
-    <button type="submit" class="btn btn-success">Hinzufügen</button>
+    <button type="submit" class="btn btn-success">Eintragen</button>
     {{ form_end(form) }}
 
 {% endblock %}
 
 {% block description %}
-    Hier kannst du Restaurant hinzufügen. Um deine Restaurants anzusehen und zu bearbeiten klicke hier. [WIP]
+    <a class="btn btn-default btn-sm btn-block"
+       href="{{ path('restaurant_list') }}">Abbrechen</a>
+    <br>
+    <p>Trage hier die Daten für ein neues Restaurant ein. Achte darauf, dass du die richtigen Daten einträgst!</p>
+    <p>Sollte mal eine Stadt fehlen frage einen Admin, damit wir die Stadt hinufügen können!</p>
 {% endblock %}

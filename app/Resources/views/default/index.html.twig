@@ -2,36 +2,48 @@
 
 {% block body %}
 
-    <b>Deine Gruppen:</b>
-    <table class="table table- table-responsive">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Beschreibung</th>
-            <th>Ort</th>
-            <th></th>
-        </tr>
-        </thead>
+    <h1>Hallo!</h1>
+    <p>Trete Gruppen bei um mit deinen Freunden Essen zu gehen. In Zukunkft kommen noch viele weitere coole Features.
+        Bleibe gespannt!</p>
+    <p>Sollte es noch keine Gruppe geben der du beitreten magst kannst du einfach eine eigene Erstellen.</p>
+    <p>Pflege weitere Restaurants ein und versehe sie mit passenden Kategorien. Sollte mal keine passende Kategorie da
+        sein,</p>
+    <p>pflege sie einfach nach. Ganz einfach und intuitiv. -TheDome</p>
 
-        <tbody>
-        {% for group in user.groups %}
+    {% if user.groups is not empty %}
+        <h2>Deine Gruppen:</h2>
+        <table class="table table- table-responsive">
+            <thead>
             <tr>
-                <td><a href="{{ path('group_details', { 'group': group.id }) }}">{{ group.name }}</a></td>
-                <td>{{ group.description }}</td>
-                <td>{{ group.city.cityName }}</td>
-                <td><a class="btn btn-info btn-sm" href="{{ path('group_details', { 'group': group.id }) }}">Details</a>
-                </td>
+                <th>Name</th>
+                <th>Beschreibung</th>
+                <th>Ort</th>
+                <th></th>
             </tr>
+            </thead>
 
-        {% endfor %}
-        </tbody>
-    </table>
+            <tbody>
+            {% for group in user.groups %}
+                <tr>
+                    <td><a href="{{ path('group_details', { 'group': group.id }) }}">{{ group.name }}</a></td>
+                    <td>{{ group.description }}</td>
+                    <td>{{ group.city.cityName }}</td>
+                    <td><a class="btn btn-info btn-sm"
+                           href="{{ path('group_details', { 'group': group.id }) }}">Details</a>
+                    </td>
+                </tr>
 
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 
 {% endblock %}
 
 {% block description %}
-    Alle Unterseiten und Funktionalitäten im Überblick.
+    <p>Das WOF ist ein Projekt für mich um mit den TEchnologien die wir benutzen in Verbindung zu kommen.</p>
+    <p>Manche Sachen haben vielleicht Bugs, oder sind nicht komplett fertig, aber so ist das halt...</p>
+    <p>Es werden noch coole Weiterentwicklungen kommen, soetwas wie eine Karte auf denen die Restaurants angezeigt werden sollen.</p>
 {% endblock %}
 
 

@@ -20,19 +20,19 @@
                 <td>{{ cat.createdAt|date('d.m.Y') }}</td>
                 <td>{{ cat.changedAt|date('d.m.Y') }}</td>
                 <td><!-- Change Button -->
-                    <button type="button" class="btn btn-warning" id="{{ cat.id }}" data-toggle="modal"
+                    <button type="button" class="btn btn-warning btn-block " id="{{ cat.id }}" data-toggle="modal"
                             data-target="#changeModal">Umbenennen
                     </button>
                 </td>
                 <td><!-- Delete Button -->
                     {% if cat.restaurants.count > 0 %}
                         <button type="button" class="btn btn-danger btn-block disabled">
-                                In Benutzung
+                            In Benutzung
                         </button>
                     {% else %}
-                    <button type="button" class="btn btn-block btn-danger"
-                            data-toggle="modal" data-target="#deleteModal">Löschen
-                    </button>
+                        <button type="button" class="btn btn-block btn-danger"
+                                data-toggle="modal" data-target="#deleteModal">Löschen
+                        </button>
                     {% endif %}
                 </td>
             </tr>
@@ -92,5 +92,9 @@
 {% endblock %}
 
 {% block description %}
-    Hier könnte <b>Ihre Werbung</b> stehen!
+    <a class="btn btn-success btn-sm btn-block"
+       href="{{ path('category_add') }}">Neue Kategorie eintragen</a>
+    <br>
+    <p>Hier stehen die "Kategorien" damit soll nicht nur unbedingt eine Nationalität vom Restaurant eingetragen werden,
+        sondern auch coole Beschreibeungen. Fehlt hier "Vegan", trage es einfach nach!</p>
 {% endblock %}

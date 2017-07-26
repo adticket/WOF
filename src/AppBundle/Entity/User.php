@@ -48,13 +48,6 @@ class User extends BaseUser
      */
     private $rating;
 
-    /**
-     * @return array
-     */
-    public function getRoles()
-    {
-        return array('ROLE_USER');
-    }
 
     /**
      * Many Users have Many Groups!
@@ -85,6 +78,12 @@ class User extends BaseUser
         $this->deleted_at = new \DateTime();
 
         return $this;
+    }
+
+
+    public function getRolesPlain()
+    {
+        return $this->roles;
     }
 
     /**

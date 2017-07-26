@@ -22,6 +22,7 @@ class DefaultController extends Controller
         $repository = $em->getRepository('AppBundle:User');
         $user = $repository->find($this->getUser());
 
+
         return $this->render('default/index.html.twig', [
             'user' => $user,
         ]);

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <table class="table table-responsive">
+        <thead>
+        <th>Name</th>
+        <th>ROLES</th>
+        <th>Email</th>
+        <th>Aktiviert</th>
+        <th>Letzter Login</th>
+        </thead>
+
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>
+                    {% for role in user.rolesPlain %}
+                        {% if role == 'ROLE_USER' %}
+                            <span class="label label-default">{{ role }}</span>
+                        {% endif %}
+                        {% if role == 'ROLE_ADMIN' %}
+                            <span class="label label-info">{{ role }}</span>
+                        {% endif %}
+                        {% if role == 'ROLE_SUPER_ADMIN' %}
+                            <span class="label label-danger">{{ role }}</span>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ user.email }}</td>
+                <td>{% if user.enabled %} Ja {% else %} Nein {% endif %}</td>
+                <td>{{ user.lastLogin|date('d.m.Y') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block description %}
+    <a class="btn btn-default btn-sm btn-block"
+       href="#">Sinnloser Knopf</a>
+    <br>
+    <b>Bereich nur für Super Admins sichtbar!</b>
+{% endblock %}

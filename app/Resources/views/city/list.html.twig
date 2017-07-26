@@ -14,10 +14,10 @@
             <tr>
                 <td>{{ city.cityName }}</td>
                 <td><!-- Change Button -->
-                    <button type="button" class="btn btn-warning" id="{{ city.id }}" data-toggle="modal" data-target="#changeModal">Ändern</button>
+                    <button type="button" class="btn btn-block btn-warning" id="{{ city.id }}" data-toggle="modal" data-target="#changeModal">Umbenennen</button>
                 </td>
                 <td><!-- Delete Button -->
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Löschen</button>
+                    <button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#deleteModal">Löschen</button>
                 </td>
             </tr>
         {% endfor %}
@@ -69,5 +69,8 @@
 {% endblock %}
 
 {% block description %}
-    -empty-
+    <a class="btn btn-success btn-sm btn-block"
+       href="{{ path('city_add') }}">Neue Stadt eintragen</a>
+    <br>
+    <b>Bereich nur für Admins sichtbar!</b>
 {% endblock %}
