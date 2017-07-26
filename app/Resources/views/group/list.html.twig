@@ -2,8 +2,15 @@
 
 {% block body %}
 
+    {% for message in app.flashes %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+
     <b>Alle Gruppen:</b>
-    <table class="table table- table-responsive">
+    <div class="table-responsive">
+    <table class="table">
         <thead>
         <tr>
             <th>Name</th>
@@ -36,6 +43,7 @@
         {% endfor %}
         </tbody>
     </table>
+    </div>
 
 {% endblock %}
 
