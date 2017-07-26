@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package AppBundle\Entity
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserR")
  */
 class User extends BaseUser
 {
@@ -60,7 +60,7 @@ class User extends BaseUser
     public function __construct()
     {
         $this->enabled = true;
-        $this->roles = ['ROLE_USER',];
+        $this->roles = ['ROLE_USER'];
         $this->created_at = new \DateTime();
         $this->changed_at = new \DateTime();
         $this->groups = new ArrayCollection();
@@ -81,7 +81,11 @@ class User extends BaseUser
         return $this;
     }
 
-
+    /**
+     * Get the "raw" Roles as a Array
+     *
+     * @return array
+     */
     public function getRolesPlain()
     {
         return $this->roles;
