@@ -39,19 +39,19 @@ class GroupController extends Controller
             $em->persist($group);
             $em->flush();
 
-            return $this->redirectToRoute('group_list');
+            return $this->redirectToRoute('group_view');
         }
 
-        return $this->render('group/add.html.twig', ['form' => $form->createView(),]);
+        return $this->render('group/create.html.twig', ['form' => $form->createView(),]);
     }
 
     /**
-     * @Route("/group/list", name="group_list")
+     * @Route("/group/view", name="group_view")
      * @param Request $request
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function listAction(Request $request, EntityManagerInterface $em)
+    public function viewAction(Request $request, EntityManagerInterface $em)
     {
         $repository = $em->getRepository('AppBundle:Group');
         $groups = $repository->findAll();
@@ -60,7 +60,7 @@ class GroupController extends Controller
             return $entity->getId();
         });
 
-        return $this->render('group/list.html.twig', [
+        return $this->render('group/view.html.twig', [
             "groups" => $groups,
             "groups_for_user" => $userGroupIds,
         ]);
@@ -76,7 +76,7 @@ class GroupController extends Controller
         $this->getUser()->addGroup($group);
         $this->getDoctrine()->getManager()->flush();
 
-        return new RedirectResponse($this->generateUrl('group_list'));
+        return new RedirectResponse($this->generateUrl('group_view'));
     }
 
     /**
@@ -89,7 +89,7 @@ class GroupController extends Controller
         $this->getUser()->removeGroup($group);
         $this->getDoctrine()->getManager()->flush();
 
-        return new RedirectResponse($this->generateUrl('group_list'));
+        return new RedirectResponse($this->generateUrl('group_view'));
     }
 
     /**
@@ -107,7 +107,7 @@ class GroupController extends Controller
 
         $this->addFlash('error', 'Du kleiner Schlingel hast keine Erlaubnis dies zu tun!');
 
-        return new RedirectResponse($this->generateUrl('group_list'));
+        return new RedirectResponse($this->generateUrl('group_view'));
 
     }
 
@@ -135,7 +135,7 @@ class GroupController extends Controller
 
         $this->addFlash('error', 'Du kleiner Schlingel hast keine Erlaubnis dies zu tun!');
 
-        return new RedirectResponse($this->generateUrl('group_list'));
+        return new RedirectResponse($this->generateUrl('group_view'));
 
     }
 
@@ -155,7 +155,7 @@ class GroupController extends Controller
 
         $this->addFlash('error', 'Du kleiner Schlingel hast keine Erlaubnis dies zu tun!');
 
-        return new RedirectResponse($this->generateUrl('group_list'));
+        return new RedirectResponse($this->generateUrl('group_view'));
     }
 
     /**
@@ -174,7 +174,7 @@ class GroupController extends Controller
 
         $this->addFlash('error', 'Du kleiner Schlingel hast keine Erlaubnis dies zu tun!');
 
-        return new RedirectResponse($this->generateUrl('group_list'));
+        return new RedirectResponse($this->generateUrl('group_view'));
 
     }
 

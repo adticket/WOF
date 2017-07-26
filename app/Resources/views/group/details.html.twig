@@ -4,16 +4,23 @@
     <h2 class="form-signin-heading">{{ group.name }}</h2>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-4">
+            <a href="{{ path('group_listRestaurant', { 'group': group.id }) }}"
+               class="btn btn-block btn-lg btn-default">Liste bearbeiten</a>
+        </div>
+        <div class="col-md-4">
             <a href="#" class="btn btn-block disabled btn-lg btn-default">Essens Glückrad drehen!</a>
-            <a href="{{ path('group_listRestaurant', { 'group': group.id }) }}" class="btn btn-block btn-xs btn-info">Liste
-                bearbeiten</a>
+        </div>
+        <div class="col-md-4">
+            <a href="#" class="btn btn-block disabled btn-lg btn-default">Bestimmt</a>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
+    {%  if group.restaurants.count is same as(0) %}
+        <div class="text-center"><br><h2>Füge der Gruppe Restaurants hinzu!</h2></div>
 
+    {% else %}
+        <div class="table-responsive">
             <table class="table">
                 <thead>
                 <tr>
@@ -36,7 +43,8 @@
                         </td>
                         <td>
                             {% if 'http' not in restaurant.website %}
-                                <a href="http://{{ restaurant.website }}" target="_blank">{{ restaurant.website }}</a>
+                                <a href="http://{{ restaurant.website }}"
+                                   target="_blank">{{ restaurant.website }}</a>
                             {% else %}
                                 <a href="{{ restaurant.website }}" target="_blank">{{ restaurant.website }}</a>
                             {% endif %}
@@ -49,20 +57,39 @@
                 </tbody>
             </table>
         </div>
-    </div>
-
-
+    {% endif %}
 
 {% endblock %}
 
 {% block description %}
     <a class="btn btn-default btn-sm btn-block"
-       href="{{ path('group_list') }}">Zur Übersicht</a>
+       href="{{ path('group_view') }}">Zur Übersicht</a>
     <a class="btn btn-danger btn-sm btn-block"
        href="{{ path('group_left', { 'group': group.id }) }}">Gruppe verlassen</a>
-    <b>Name:</b> {{ group.name }}<br>
-    <b>Standort:</b> {{ group.city.cityName }}<br>
-    <b>Erstellt von:</b> {{ group.createdBy }}<br>
-    <b>Erstellt am:</b> {{ group.createdAt|date ('d.m.Y') }}<br>
-    <b>Beschreibung:</b> {{ group.description }}<br>
+    <br>
+
+    <ul class="list-group">
+        <li class="list-group-item"><b>Name</b>
+            <div class="pull-right"> {{ group.name }}</div>
+        </li>
+        <li class="list-group-item"><b>Standort</b>
+            <div class="pull-right"> {{ group.city.cityName }}</div>
+        </li>
+        <li class="list-group-item"><b>Gründer</b>
+            <div class="pull-right"> {{ group.createdBy }}</div>
+        </li>
+        <li class="list-group-item"><b>Erstellt am</b>
+            <div class="pull-right"> {{ group.createdAt|date ('d.m.Y') }}</div>
+        </li>
+        <li class="list-group-item"><b>Beschreibung</b><br>{{ group.description }}</li>
+    </ul>
+
+    <ul class="list-group">
+        <li class="list-group-item"><b>Mitglieder</b><span class="badge">{{ group.users.count }}</span></li>
+        {% for user in group.users %}
+            <li class="list-group-item">{{ user }}</li>
+        {% endfor %}
+    </ul>
+
+
 {% endblock %}

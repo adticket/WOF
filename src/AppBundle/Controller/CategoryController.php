@@ -19,15 +19,15 @@ use Symfony\Component\Security\Core\Role\RoleHierarchy;
 class CategoryController extends Controller
 {
     /**
-     * @Route("/category/list", name="category_list")
+     * @Route("/category/view", name="category_view")
      */
-    public function listAction(Request $request, EntityManagerInterface $em)
+    public function viewAction(Request $request, EntityManagerInterface $em)
     {
         $repository = $em->getRepository('AppBundle:Category');
         $categories = $repository->findAll();
 
 
-        return $this->render('category/list.html.twig', [
+        return $this->render('category/view.html.twig', [
             "categories" => $categories,
         ]);
     }
@@ -68,10 +68,10 @@ class CategoryController extends Controller
             $em->persist($category);
             $em->flush();
 
-            return $this->redirectToRoute('category_list');
+            return $this->redirectToRoute('category_view');
         }
 
 
-        return $this->render('/category/add.html.twig', ['form' => $form->createView(),]);
+        return $this->render('category/add.html.twig', ['form' => $form->createView(),]);
     }
 }

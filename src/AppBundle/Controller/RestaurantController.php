@@ -16,9 +16,9 @@ use Doctrine\ORM\EntityManagerInterface;
 class RestaurantController extends Controller
 {
     /**
-     * @Route("/restaurant/list", name="restaurant_list")
+     * @Route("/restaurant/view", name="restaurant_view")
      */
-    public function listAction(Request $request, EntityManagerInterface $em)
+    public function viewAction(Request $request, EntityManagerInterface $em)
     {
 
         $repository = $em->getRepository('AppBundle:Restaurant');
@@ -28,7 +28,7 @@ class RestaurantController extends Controller
             return $entity->getId();
         });
 
-        return $this->render('restaurant/list.html.twig', [
+        return $this->render('restaurant/view.html.twig', [
             "restaurants" => $restaurants,
             "groups_for_user" => $userGroupIds,
         ]);
@@ -37,7 +37,7 @@ class RestaurantController extends Controller
     /**
      * @Route("/restaurant/add", name="restaurant_add")
      */
-    public function user_profileAction(Request $request)
+    public function addAction(Request $request)
     {
         $restaurant = new Restaurant();
         $form = $this->createForm(RestaurantType::class, $restaurant);
@@ -49,7 +49,7 @@ class RestaurantController extends Controller
             $em->persist($restaurant);
             $em->flush();
 
-            return $this->redirectToRoute('restaurant_list');
+            return $this->redirectToRoute('restaurant_view');
         }
 
 

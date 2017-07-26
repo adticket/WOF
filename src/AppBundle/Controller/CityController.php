@@ -18,16 +18,16 @@ class CityController extends Controller
 {
 
     /**
-     * @Route("/city/list", name="city_list")
+     * @Route("/city/view", name="city_view")
      */
-    public function listAction(Request $request, EntityManagerInterface $em)
+    public function viewAction(Request $request, EntityManagerInterface $em)
     {
 
         $repository = $em->getRepository('AppBundle:City');
         $city = $repository->findAll();
 
 
-        return $this->render(':city:list.html.twig', [
+        return $this->render(':city:view.html.twig', [
             "cities" => $city,
         ]);
     }
@@ -50,9 +50,8 @@ class CityController extends Controller
             $em->persist($city);
             $em->flush();
 
-            return $this->redirectToRoute('city_list');
+            return $this->redirectToRoute('city_view');
         }
-
 
         return $this->render('/city/add.html.twig',['form' => $form->createView(),]);
     }
