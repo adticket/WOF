@@ -66,13 +66,6 @@ class Restaurant
     private $changed_at;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
-     */
-    private $deleted_at;
-
-    /**
      * @var User
      *
      * @ORM\Column(name="created_by", type="object")
@@ -83,7 +76,7 @@ class Restaurant
     /**
      * Many Restaurants has Many Categories
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Category", inversedBy="restaurant")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Category", inversedBy="restaurants")
      * @ORM\JoinTable(name="restaurant_category")
      */
     private $categories;
@@ -215,30 +208,6 @@ class Restaurant
     }
 
     /**
-     * Set deletedAt
-     *
-     * @param \DateTime
-     *
-     * @return Restaurant
-     */
-    public function setDeletedAt()
-    {
-        $this->deleted_at = new \DateTime();
-
-        return $this;
-    }
-
-    /**
-     * Get deletedAt
-     *
-     * @return \DateTime
-     */
-    public function getDeletedAt()
-    {
-        return $this->deleted_at;
-    }
-
-    /**
      * @return ArrayCollection
      */
     public function getCategories()
@@ -340,7 +309,7 @@ class Restaurant
     }
 
     /**
-     * @return Rating
+     * @return ArrayCollection
      */
     public function getRating()
     {
@@ -365,6 +334,21 @@ class Restaurant
         return $this->groups;
     }
 
+    /**
+     * Give back the ready google maps link of a restaurant!
+     *
+     * @return mixed|string
+     */
+    public function genMapsLink()
+    {
+        $city = str_replace(' ', '+', $this->getCity()->getCityName());
+        $street = str_replace(' ', '+', $this->getStreet());
+        $hno = str_replace(' ', '+', $this->getHouseNo());
+
+        $url = "https://maps.google.com?q=" . $city .'+'. $street .'+'. $hno;
+
+        return $url;
+    }
 
 
 }
