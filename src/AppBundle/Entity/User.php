@@ -80,6 +80,12 @@ class User extends BaseUser
         return $this->created_at;
     }
 
+    public function getRoles()
+    {
+        $roles = $this->roles;
+
+        return array_unique($roles);
+    }
 
 
 }
