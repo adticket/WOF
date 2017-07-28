@@ -12,23 +12,24 @@
             <a href="#" class="btn btn-block disabled btn-lg btn-default">Essens Glückrad drehen!</a>
         </div>
         <div class="col-md-4">
-            <a href="#" class="btn btn-block disabled btn-lg btn-default">Bestimmt</a>
+            <a href="#" class="btn btn-block disabled btn-lg btn-default">Bestimmen</a>
         </div>
     </div>
 
-    {%  if group.restaurants.count is same as(0) %}
-        <div class="text-center"><br><h2>Füge der Gruppe Restaurants hinzu!</h2></div>
+    {% if group.restaurants.count is same as(0) %}
+        <div class="text-center"><br>
+            <h2>Füge der Gruppe Restaurants hinzu!</h2></div>
 
     {% else %}
         <div class="table-responsive">
             <table class="table">
                 <thead>
                 <tr>
-                    <th class="col-md-2">Name</th>
-                    <th class="col-md-3">Kategorien</th>
-                    <th class="col-md-2">Website</th>
-                    <th class="col-md-2">Straße</th>
-                    <th class="col-md-1">Hausnummer</th>
+                    <th>Name</th>
+                    <th>Kategorien</th>
+                    <th>Stadt</th>
+                    <th>Straße</th>
+                    <th></th>
                 </tr>
                 </thead>
 
@@ -41,16 +42,24 @@
                                 <span class="label label-default">{{ cat.categoryName }}</span>
                             {% endfor %}
                         </td>
-                        <td>
-                            {% if 'http' not in restaurant.website %}
-                                <a href="http://{{ restaurant.website }}"
-                                   target="_blank">{{ restaurant.website }}</a>
+                        <td>{{ restaurant.city.cityName }}</td>
+                        <td>{{ restaurant.street }} {{ restaurant.houseNo }}</td>
+                        <td>{% if 'http' not in restaurant.website %}
+                                <a class="btn btn-default" role="button" href="http://{{ restaurant.website }}"
+                                   target="_blank">
+                                    <span class="glyphicon glyphicon glyphicon-globe" aria-hidden="true"></span>
+                                </a>
                             {% else %}
-                                <a href="{{ restaurant.website }}" target="_blank">{{ restaurant.website }}</a>
+                                <a class="btn btn-default" role="button" href="{{ restaurant.website }}"
+                                   target="_blank">
+                                    <span class="glyphicon glyphicon glyphicon-globe" aria-hidden="true"></span>
+                                </a>
                             {% endif %}
+                            <a class="btn btn-default" role="button" target="_blank"
+                               href="{{ restaurant.genMapsLink }}">
+                                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                            </a>
                         </td>
-                        <td>{{ restaurant.street }}</td>
-                        <td>{{ restaurant.houseNo }}</td>
                     </tr>
 
                 {% endfor %}
@@ -66,22 +75,26 @@
        href="{{ path('group_view') }}">Zur Übersicht</a>
     <a class="btn btn-danger btn-sm btn-block"
        href="{{ path('group_left', { 'group': group.id }) }}">Gruppe verlassen</a>
+    {% if group.users.count is same as(1) %}
+        <a class="btn btn-danger btn-sm btn-block"
+           href="{{ path('group_delete', { 'group': group.id }) }}">Gruppe löschen</a>
+    {% endif %}
     <br>
 
     <ul class="list-group">
-        <li class="list-group-item"><b>Name</b>
+        <li class="list-group-item clearfix"><b>Name</b>
             <div class="pull-right"> {{ group.name }}</div>
         </li>
-        <li class="list-group-item"><b>Standort</b>
+        <li class="list-group-item clearfix"><b>Standort</b>
             <div class="pull-right"> {{ group.city.cityName }}</div>
         </li>
-        <li class="list-group-item"><b>Gründer</b>
+        <li class="list-group-item clearfix"><b>Gründer</b>
             <div class="pull-right"> {{ group.createdBy }}</div>
         </li>
-        <li class="list-group-item"><b>Erstellt am</b>
+        <li class="list-group-item clearfix"><b>Erstellt am</b>
             <div class="pull-right"> {{ group.createdAt|date ('d.m.Y') }}</div>
         </li>
-        <li class="list-group-item"><b>Beschreibung</b><br>{{ group.description }}</li>
+        <li class="list-group-item clearfix"><b>Beschreibung</b><br>{{ group.description }}</li>
     </ul>
 
     <ul class="list-group">

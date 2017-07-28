@@ -44,13 +44,6 @@ class Category
     private $changed_at;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
-     */
-    private $deleted_at;
-
-    /**
      * @var User
      *
      * @ORM\Column(name="created_by", type="object")
@@ -69,7 +62,6 @@ class Category
         $this->created_at = new \DateTime();
         $this->changed_at = new \DateTime();
         $this->restaurants = new ArrayCollection();
-
     }
 
     /**
@@ -128,31 +120,7 @@ class Category
     }
 
     /**
-     * Set deletedAt
-     *
-     * @param \DateTime
-     *
-     * @return Category
-     */
-    public function setDeletedAt()
-    {
-        $this->deleted_at = new \DateTime();
-
-        return $this;
-    }
-
-    /**
-     * Get deletedAt
-     *
-     * @return \DateTime
-     */
-    public function getDeletedAt()
-    {
-        return $this->deleted_at;
-    }
-
-    /**
-     * @return ArrayCollection
+     * @return mixed
      */
     public function getRestaurants()
     {
@@ -160,14 +128,12 @@ class Category
     }
 
     /**
-     * @param ArrayCollection $restaurants
-     *
+     * @param mixed $restaurants
      * @return Category
      */
     public function setRestaurants($restaurants)
     {
-        $this->$restaurants = $restaurants;
-
+        $this->restaurants = $restaurants;
         return $this;
     }
 
@@ -176,11 +142,31 @@ class Category
      *
      * @return Category
      */
-    public function addLocation(Restaurant $restaurant)
+    public function addRestaurant(Restaurant $restaurant)
     {
         $this->restaurants->add($restaurant);
 
         return $this;
     }
+
+    /**
+     * @return User
+     */
+    public function getCreatedBy()
+    {
+        return $this->created_by;
+    }
+
+    /**
+     * @param User $created_by
+     * @return Category
+     */
+    public function setCreatedBy($created_by)
+    {
+        $this->created_by = $created_by;
+        return $this;
+    }
+
+
 }
 

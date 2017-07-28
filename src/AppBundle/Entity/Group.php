@@ -44,13 +44,6 @@ class Group extends BaseGroup
     private $changed_at;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
-     */
-    private $deleted_at;
-
-    /**
      * @var User
      *
      * @ORM\Column(name="created_by", type="object")
@@ -92,6 +85,7 @@ class Group extends BaseGroup
         $this->history = new ArrayCollection();
         $this->restaurants = new ArrayCollection();
     }
+
 
     public function getId()
     {
@@ -136,29 +130,11 @@ class Group extends BaseGroup
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getDeletedAt()
-    {
-        return $this->deleted_at;
-    }
-
-    /**
      * @return User|string
      */
     public function getCreatedBy()
     {
         return $this->created_by;
-    }
-
-    /**
-     * @return Group
-     */
-    public function setDeletedAt()
-    {
-        $this->deleted_at = new \DateTime();
-        
-        return $this;
     }
 
     /**
@@ -212,8 +188,9 @@ class Group extends BaseGroup
         return $this;
     }
 
+
     /**
-     * @return History
+     * @return ArrayCollection
      */
     public function getHistory()
     {

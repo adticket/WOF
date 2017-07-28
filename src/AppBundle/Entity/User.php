@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @package AppBundle\Entity
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\UserR")
  */
 class User extends BaseUser
 {
@@ -37,13 +36,6 @@ class User extends BaseUser
     private $changed_at;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
-     */
-    private $deleted_at;
-
-    /**
      * One User has Many Ratings!
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Rating", mappedBy="user")
      */
@@ -67,38 +59,9 @@ class User extends BaseUser
         $this->rating = new ArrayCollection();
     }
 
-    /**
-     * Set deletedAt
-     *
-     * @param \DateTime
-     *
-     * @return User
-     */
-    public function setDeletedAt()
-    {
-        $this->deleted_at = new \DateTime();
-
-        return $this;
-    }
-
-    /**
-     * Get the "raw" Roles as a Array
-     *
-     * @return array
-     */
     public function getRolesPlain()
     {
         return $this->roles;
-    }
-
-    /**
-     * Get deletedAt
-     *
-     * @return \DateTime
-     */
-    public function getDeletedAt()
-    {
-        return $this->deleted_at;
     }
 
     /**
