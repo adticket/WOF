@@ -22,14 +22,6 @@ class Group extends BaseGroup
      */
     protected $id;
 
-    /* doesn't work -> get a exceptionionionion
-     * @var string
-     *
-     * @ORM\Column(unique=true)
-
-    protected $name;
-    */
-
     /**
      * @var string
      *
@@ -66,23 +58,39 @@ class Group extends BaseGroup
     private $created_by;
 
     /**
-     * Many Group has Many Locations!
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Location", mappedBy="group")
-     */
-    private $locations;
-
-    /**
      * Many Groups have Many Users!
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", mappedBy="groups")
      */
     private $users;
 
+    /**
+     * Many Groups have/is in One city!
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\City", inversedBy="groups")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+     */
+    private $city;
+
+    /**
+     * One Group has many visits!
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\History", mappedBy="group")
+     */
+    private $history;
+
+    /**
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Restaurant", inversedBy="groups")
+     * @ORM\JoinTable(name="groups_restaurants")
+     */
+    private $restaurants;
+
     public function __construct()
     {
         $this->created_at = new \DateTime();
         $this->changed_at = new \DateTime();
-        $this->locations = new ArrayCollection();
+        $this->city = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->history = new ArrayCollection();
+        $this->restaurants = new ArrayCollection();
     }
 
     public function getId()
@@ -182,6 +190,85 @@ class Group extends BaseGroup
     public function addUser(User $user)
     {
         $this->users->add($user);
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param City $city
+     * @return Group
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+        return $this;
+    }
+
+    /**
+     * @return History
+     */
+    public function getHistory()
+    {
+        return $this->history;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param User $users
+     * @return Group
+     */
+    public function setUsers($users)
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getRestaurants()
+    {
+        return $this->restaurants;
+    }
+
+    /**
+     * @param Restaurant $restaurant
+     * @return $this
+     */
+    public function addRestaurant(Restaurant $restaurant)
+    {
+        if (!$this->getRestaurants()->contains($restaurant)) {
+            $this->getRestaurants()->add($restaurant);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Restaurant $restaurant
+     * @return $this
+     */
+    public function removeRestaurant(Restaurant $restaurant)
+    {
+        if ($this->getRestaurants()->contains($restaurant)) {
+            $this->getRestaurants()->removeElement($restaurant);
+        }
 
         return $this;
     }

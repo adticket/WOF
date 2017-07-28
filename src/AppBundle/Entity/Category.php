@@ -58,18 +58,18 @@ class Category
     private $created_by;
 
     /**
-     * Many Categories has many Locations
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Location", mappedBy="categories")
+     * Many Categories has many Restaurants
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Restaurant", mappedBy="categories")
      */
-    private $locations;
+    private $restaurants;
 
 
     public function __construct()
     {
         $this->created_at = new \DateTime();
         $this->changed_at = new \DateTime();
-        $this->created_by = get_current_user();
-        $this->locations = new ArrayCollection();
+        $this->restaurants = new ArrayCollection();
+
     }
 
     /**
@@ -154,31 +154,31 @@ class Category
     /**
      * @return ArrayCollection
      */
-    public function getLocations()
+    public function getRestaurants()
     {
-        return $this->locations;
+        return $this->restaurants;
     }
 
     /**
-     * @param ArrayCollection $locations
+     * @param ArrayCollection $restaurants
      *
      * @return Category
      */
-    public function setLocations($locations)
+    public function setRestaurants($restaurants)
     {
-        $this->locations = $locations;
+        $this->$restaurants = $restaurants;
 
         return $this;
     }
 
     /**
-     * @param Location $location
+     * @param Restaurant $restaurant
      *
      * @return Category
      */
-    public function addLocation(Location $location)
+    public function addLocation(Restaurant $restaurant)
     {
-        $this->locations->add($location);
+        $this->restaurants->add($restaurant);
 
         return $this;
     }

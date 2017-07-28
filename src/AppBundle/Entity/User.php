@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package AppBundle\Entity
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserR")
  */
 class User extends BaseUser
 {
@@ -43,12 +44,11 @@ class User extends BaseUser
     private $deleted_at;
 
     /**
-     * @return array
+     * One User has Many Ratings!
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Rating", mappedBy="user")
      */
-    public function getRoles()
-    {
-        return array('ROLE_USER');
-    }
+    private $rating;
+
 
     /**
      * Many Users have Many Groups!
@@ -60,10 +60,11 @@ class User extends BaseUser
     public function __construct()
     {
         $this->enabled = true;
-        $this->roles = ['ROLE_USER',];
+        $this->roles = ['ROLE_USER'];
         $this->created_at = new \DateTime();
         $this->changed_at = new \DateTime();
         $this->groups = new ArrayCollection();
+        $this->rating = new ArrayCollection();
     }
 
     /**
@@ -78,6 +79,16 @@ class User extends BaseUser
         $this->deleted_at = new \DateTime();
 
         return $this;
+    }
+
+    /**
+     * Get the "raw" Roles as a Array
+     *
+     * @return array
+     */
+    public function getRolesPlain()
+    {
+        return $this->roles;
     }
 
     /**

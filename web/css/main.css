@@ -1,0 +1,29 @@
+.inner-description {
+    background-color: #ffffff;
+    border-width: 1px;
+    border-color: #0f0f0f;
+}
+
+.inner-body {
+    background-color: #ffffff;
+
+}
+
+.inner-windows {
+    background-color: #ffffff;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.overall-background {
+    background-color: #EEEEEE;
+}
+
+.font-navbar {
+    color: #1d1e1f;
+}
+
+.btn {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}

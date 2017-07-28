@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Erstellt am</th>
+        <th>Letzte Änderung</th>
+        <th></th>
+        <th></th>
+        </thead>
+
+        <tbody>
+        {% for cat in categories %}
+            <tr>
+                <th>{{ cat.id }}</th>
+                <td>{{ cat.categoryName }}</td>
+                <td>{{ cat.createdAt|date('d.m.Y') }}</td>
+                <td>{{ cat.changedAt|date('d.m.Y') }}</td>
+                <td><!-- Change Button -->
+                    <button type="button" class="btn btn-warning btn-block " id="{{ cat.id }}" data-toggle="modal"
+                            data-target="#changeModal">Umbenennen
+                    </button>
+                </td>
+                <td><!-- Delete Button -->
+                    {% if cat.restaurants.count > 0 %}
+                        <button type="button" class="btn btn-danger btn-block disabled">
+                            In Benutzung
+                        </button>
+                    {% else %}
+                        <button type="button" class="btn btn-block btn-danger"
+                                data-toggle="modal" data-target="#deleteModal">Löschen
+                        </button>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+    <!-- changeModal -->
+    <div class="modal fade" id="changeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" id="name" placeholder="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                    <button type="button" class="btn btn-success" id="saveChange">Speichern</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- deleteModal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Sicher das Sie die Kategorie: -placeholder- löschen möchten?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                    <button type="button" class="btn btn-danger" id="delete">Löschen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  -->
+    <script>
+
+    </script>
+
+{% endblock %}
+
+{% block description %}
+    <a class="btn btn-success btn-sm btn-block"
+       href="{{ path('category_add') }}">Neue Kategorie eintragen</a>
+    <br>
+    <p>Hier stehen die "Kategorien" damit soll nicht nur unbedingt eine Nationalität vom Restaurant eingetragen werden,
+        sondern auch coole Beschreibeungen. Fehlt hier "Vegan", trage es einfach nach!</p>
+{% endblock %}

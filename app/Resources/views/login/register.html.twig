@@ -3,40 +3,34 @@
 {% block body %}
 
     {% form_theme form 'bootstrap_3_layout.html.twig' %}
-
-    {{ form_start(form) }}
-
-    <div class="container">
-        <div class="form-signin">
-            <h2 class="form-signin-heading">Registrieren</h2>
-        <div>
-            {{ form_errors(form.username) }}
-            {{ form_widget(form.username, {'attr': {'placeholder': 'Username'}}) }}
+    <div class="row">
+        <div class="col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-4 col-sm-5 col-sm-offset-2 col-lg-2 col-lg-offset-5">
+            {{ form_start(form) }}
+            <form class="form-group">
+                <h2 class="form-signin-heading">Registrieren</h2>
+                <div>
+                    {{ form_errors(form.username) }}
+                    {{ form_widget(form.username, {'attr': {'placeholder': 'Username'}}) }}
+                </div>
+                <div>
+                    {{ form_errors(form.email) }}
+                    {{ form_widget(form.email, {'attr': {'placeholder': 'E-Mail'}}) }}
+                </div>
+                <div>
+                    {{ form_errors(form.plainPassword.first) }}
+                    {{ form_widget(form.plainPassword.first, {'attr': {'placeholder': 'Passwort'}}) }}
+                </div>
+                <div>
+                    {{ form_errors(form.plainPassword.second) }}
+                    {{ form_widget(form.plainPassword.second, {'attr': {'placeholder': 'Passwort wiederholen'}}) }}
+                </div>
+                {{ form_row(form._token) }}
+                <button class="btn btn-primary btn-block" type="submit">Erstellen</button>
+            </form>
+            {{ form_end(form) }}
+            <a class="btn btn-default btn-block" href="{{ path('login') }}" type="button">Zurück</a>
         </div>
-        <div>
-            {{ form_errors(form.email) }}
-            {{ form_widget(form.email, {'attr': {'placeholder': 'E-Mail'}}) }}
-        </div>
-        <div>
-            {{ form_errors(form.plainPassword.first) }}
-            {{ form_widget(form.plainPassword.first, {'attr': {'placeholder': 'Passwort'}}) }}
-        </div>
-        <div>
-            {{ form_errors(form.plainPassword.second) }}
-            {{ form_widget(form.plainPassword.second, {'attr': {'placeholder': 'Passwort wiederholen'}}) }}
-        </div>
-        <button class="btn btn-primary btn-block" type="submit">Register!</button>
-        </div>
-
-    </div> <!-- /container -->
-
-
-
-
-
-
-    {{ form_end(form) }}
-
+    </div>
 {% endblock %}
 
 {% block description %}

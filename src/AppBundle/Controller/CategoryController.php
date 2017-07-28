@@ -3,14 +3,14 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
 
+use AppBundle\Form\CategoryType;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Security\Core\Role\Role;
+use Symfony\Component\Security\Core\Role\RoleHierarchy;
 
 /**
  * Class CategoryController
@@ -19,16 +19,15 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class CategoryController extends Controller
 {
     /**
-     * @Route("/category/list", name="category_list")
+     * @Route("/category/view", name="category_view")
      */
-    public function listAction(Request $request, EntityManagerInterface $em)
+    public function viewAction(Request $request, EntityManagerInterface $em)
     {
-
         $repository = $em->getRepository('AppBundle:Category');
         $categories = $repository->findAll();
 
 
-        return $this->render('category/list.html.twig', [
+        return $this->render('category/view.html.twig', [
             "categories" => $categories,
         ]);
     }
@@ -61,26 +60,18 @@ class CategoryController extends Controller
     public function addAction(Request $request)
     {
         $category = new Category();
-
-        $form = $this->createFormBuilder($category)
-            ->add('category_name', TextType::class, array('label' => 'Kategorienname'))
-            ->add('save', SubmitType::class, array('label' => 'Kategorie speichern'))
-            ->getForm();
+        $form = $this->createForm(CategoryType::class, $category);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            $category->setCreatedAt(new \DateTime());
-            $category->setChangedAt(new \DateTime());
-            $category->setDeletedAt(NULL);
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($category);
             $em->flush();
 
-            return $this->redirectToRoute('category_list');
+            return $this->redirectToRoute('category_view');
         }
 
 
-        return $this->render('category/add.html.twig',['form' => $form->createView(),]);
+        return $this->render('category/add.html.twig', ['form' => $form->createView(),]);
     }
 }

@@ -2,22 +2,50 @@
 
 {% block body %}
     <div class="panel panel-default">
-        <div class="panel-body">Dein Name: {{ firstname }}</div><a href="#" class="btn btn-success disabled">Ändern</a>
+        <div class="panel-heading">Username</div>
+        <div class="panel-body">
+            {{ user.username }}
+        </div>
     </div>
+
     <div class="panel panel-default">
-        <div class="panel-body">Deine Mail: {{ mail }}</div><a href="#" class="btn btn-success disabled">Ändern</a>
+        <div class="panel-heading">E-Mail</div>
+        <div class="panel-body">
+            {{ user.email }}
+        </div>
     </div>
 
-    <div class="col-4 offset-4 needMargin">
-    <div class="alert alert-danger">
-        <center>Account löschen</center>
-        <a href="#" class="btn btn-danger btn-block disabled">Löschen</a>
-    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Infos</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+                    <strong>Erstellt am:</strong><br> {{ user.createdAt|date ('d.m.Y') }}
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+                    <strong>Letzer Login:</strong><br> {{ user.lastLogin|date ('d.m.Y') }}
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+                    <strong>Letzte Änderung:</strong><br> {{ user.createdAt|date ('d.m.Y') }}
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+                    <strong>Deine Gruppen:</strong><br> {{ user.groups.count }}
+                </div>
+            </div>
+        </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12 col-lg-12">
+            <div class="alert alert-danger">
+                <a href="#" class="btn btn-danger btn-block disabled">Account löschen! (Disabled)</a>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 
 {% block description %}
-    Deine Profildaten zum bearbeiten.
+    <p>Hier sind deine Profildaten. Leider stehen die noch nicht so viele Möglichkeiten offen dein Profil zu bearbeiten
+        geschweige denn anzupassen.</p>
 {% endblock %}

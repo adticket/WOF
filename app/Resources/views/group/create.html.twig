@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+    {{ form_start(form) }}
+    {{ form_row(form.name, { 'attr': {"placeholder":"max. 50 Zeichen"}, "label": "Gruppenname: " }) }}
+    {{ form_row(form.description, { 'attr': {"placeholder":"max. 1000 Zeichen"}, "label": "Gruppenbeschreibung: " }) }}
+    {{ form_row(form.city, { 'attr': {"placeholder":""}, "label": "Stadt: " }) }}
+    <button type="submit" class="btn btn-success">Hinzufügen</button>
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block description %}
+    <a class="btn btn-default btn-sm btn-block"
+       href="{{ path('group_view') }}">Abbrechen</a>
+    <br>
+    <p>Trage hier deine Daten zur Gruppe ein. Sollte eine Stadt fehlen, frage einen Admin, damit wir diese eintragen
+        können.</p>
+{% endblock %}
