@@ -47,7 +47,6 @@ class GroupController extends Controller
 
     /**
      * @Route("/group/view", name="group_view")
-     * @param Request $request
      * @param EntityManagerInterface $em
      * @return Response
      */
@@ -114,7 +113,6 @@ class GroupController extends Controller
     /**
      * @Route("/group/restaurants/list/{group}", name="group_listRestaurant")
      * @param Group $group
-     * @param Request $request
      * @param EntityManagerInterface $em
      * @return Response
      */
@@ -197,9 +195,9 @@ class GroupController extends Controller
 
     }
 
-    /**
+    /* *
      * @Route("/group/roll/{group}", methods={"GET"}, name="group_roll")
-     */
+     * /
     public function rollAction(Group $group)
     {
         if ($this->isUserInGroup($group)) {
@@ -213,7 +211,7 @@ class GroupController extends Controller
 
         return new RedirectResponse($this->generateUrl('group_view'));
 
-    }
+    }*/
 
     /**
      * Check if the current user is in the given group
