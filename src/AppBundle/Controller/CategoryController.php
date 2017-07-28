@@ -9,8 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Role\Role;
-use Symfony\Component\Security\Core\Role\RoleHierarchy;
 
 /**
  * Class CategoryController
@@ -21,14 +19,17 @@ class CategoryController extends Controller
     /**
      * @Route("/category/view", name="category_view")
      */
-    public function viewAction(Request $request, EntityManagerInterface $em)
+    public function viewAction(EntityManagerInterface $em)
     {
         $repository = $em->getRepository('AppBundle:Category');
         $categories = $repository->findAll();
 
+        $form = $this->createForm(CategoryType::class);
+
 
         return $this->render('category/view.html.twig', [
             "categories" => $categories,
+            'form' => $form->createView(),
         ]);
     }
 

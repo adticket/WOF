@@ -32,7 +32,7 @@ class City
     /**
      * One City has Many Groups
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Group", mappedBy="locations")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Group", mappedBy="city")
      */
     private $groups;
 
@@ -40,7 +40,8 @@ class City
      * One City has Many Restaurants!
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Restaurant", mappedBy="city")
      */
-    private $restaurant;
+    private $restaurants;
+
 
     /**
      * City constructor.
@@ -48,7 +49,25 @@ class City
     public function __construct()
     {
         $this->groups = new ArrayCollection();
-        $this->restaurant = new ArrayCollection();
+        $this->restaurants = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRestaurants()
+    {
+        return $this->restaurants;
+    }
+
+    /**
+     * @param mixed $restaurants
+     * @return City
+     */
+    public function setRestaurants($restaurants)
+    {
+        $this->restaurants = $restaurants;
+        return $this;
     }
 
     /**
@@ -111,5 +130,6 @@ class City
     {
         return $this->cityName;
     }
+
 }
 

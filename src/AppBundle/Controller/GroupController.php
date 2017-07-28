@@ -51,7 +51,7 @@ class GroupController extends Controller
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function viewAction(Request $request, EntityManagerInterface $em)
+    public function viewAction(EntityManagerInterface $em)
     {
         $repository = $em->getRepository('AppBundle:Group');
         $groups = $repository->findAll();
@@ -118,10 +118,9 @@ class GroupController extends Controller
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function listRestaurantInGroupAction(Group $group, Request $request, EntityManagerInterface $em)
+    public function listRestaurantInGroupAction(Group $group, EntityManagerInterface $em)
     {
-        if ($this->isUserInGroup($group))
-        {
+        if ($this->isUserInGroup($group)) {
             $repository = $em->getRepository('AppBundle:Restaurant');
             $restaurants = $repository->findBy([
                 'city' => $group->getCity()->getId(),
@@ -179,6 +178,44 @@ class GroupController extends Controller
     }
 
     /**
+     * @Route("/group/delete/{group}", methods={"GET"}, name="group_delete")
+     * @param Group $group
+     * @return RedirectResponse
+     */
+    public function deleteGroupAction(Group $group, EntityManagerInterface $em)
+    {
+        if ($this->isUserInGroup($group) && $group->getUsers()->count() === 1)
+            {
+                $em->remove($group);
+                $em->flush();
+                return new RedirectResponse($this->generateUrl('group_view'));
+            }
+
+        $this->addFlash('error', 'Du kleiner Schlingel hast keine Erlaubnis dies zu tun!');
+
+        return new RedirectResponse($this->generateUrl('group_view'));
+
+    }
+
+    /**
+     * @Route("/group/roll/{group}", methods={"GET"}, name="group_roll")
+     */
+    public function rollAction(Group $group)
+    {
+        if ($this->isUserInGroup($group)) {
+
+            //DO SOMETHING
+
+            //return new RedirectResponse($this->generateUrl('group_roll', ['restaurant' => $restaurant]));
+        }
+
+        $this->addFlash('error', 'Du kleiner Schlingel hast keine Erlaubnis dies zu tun!');
+
+        return new RedirectResponse($this->generateUrl('group_view'));
+
+    }
+
+    /**
      * Check if the current user is in the given group
      * @param Group $group
      * @return bool
@@ -191,4 +228,5 @@ class GroupController extends Controller
 
         return false;
     }
+
 }
