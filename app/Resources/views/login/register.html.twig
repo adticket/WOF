@@ -8,22 +8,21 @@
             {{ form_start(form) }}
             <form class="form-group">
                 <h2 class="form-signin-heading text-center">Registrieren</h2>
+                {{ form_errors(form) }}
                 <div>
-                    {{ form_errors(form.username) }}
-                    {{ form_widget(form.username, {'attr': {'placeholder': 'Username'}}) }}
+                    {{ form_row(form.username, { 'attr': {"placeholder":"6 bis 16 Zeichen"}, "label": "Username: " }) }}
                 </div>
                 <div>
-                    {{ form_errors(form.email) }}
-                    {{ form_widget(form.email, {'attr': {'placeholder': 'E-Mail'}}) }}
+                    {{ form_row(form.email, { 'attr': {"placeholder":"beispiel@mail.de"}, "label": "E-Mail: " }) }}
                 </div>
                 <div>
-                    {{ form_errors(form.plainPassword.first) }}
-                    {{ form_widget(form.plainPassword.first, {'attr': {'placeholder': 'Passwort'}}) }}
+                    {{ form_row(form.plainPassword.first, { 'attr': {"placeholder":""}, "label": "Passwort: " }) }}
                 </div>
                 <div>
-                    {{ form_errors(form.plainPassword.second) }}
-                    {{ form_widget(form.plainPassword.second, {'attr': {'placeholder': 'Passwort wiederholen'}}) }}
+
+                    {{ form_row(form.plainPassword.second, { 'attr': {"placeholder":""}, "label": "Passwort wiederholen: " }) }}
                 </div>
+
                 {{ form_row(form._token) }}
                 <button class="btn btn-primary btn-block" type="submit">Erstellen</button>
             </form>

@@ -4,10 +4,12 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Category
- *
+ * @UniqueEntity("categoryName", message="Diese Kategorie gibt es schon!")
  * @ORM\Table(name="category")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CategoryRepository")
  */
@@ -24,8 +26,13 @@ class Category
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="category_name", type="string", length=50)
+     * @Assert\Regex(
+     *     pattern     = "/^[a-z]+$/i",
+     *     htmlPattern = "^[a-zA-Z]+$",
+     *     message="Nur Buchstaben!"
+     * )
+     * @Assert\Length(min=3, max=16, minMessage="Name zu kurz!", maxMessage="Name zu lang!")
+     * @ORM\Column(name="category_name", type="string", length=50, unique=true)
      */
     private $categoryName;
 

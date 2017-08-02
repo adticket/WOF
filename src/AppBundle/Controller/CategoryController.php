@@ -75,4 +75,26 @@ class CategoryController extends Controller
 
         return $this->render('category/add.html.twig', ['form' => $form->createView(),]);
     }
+
+    /**
+     * @Route("/category/edit/{category}", methods={"GET", "POST"}, name="category_edit")
+     * @param Request $request
+     * @param Category $category
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction(Request $request, Category $category)
+    {
+        $form = $this->createForm(CategoryType::class, $category);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('category_view');
+        }
+
+        return $this->render('category/add.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
 }

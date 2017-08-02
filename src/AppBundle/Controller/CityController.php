@@ -55,4 +55,25 @@ class CityController extends Controller
 
         return $this->render('/city/add.html.twig',['form' => $form->createView(),]);
     }
+
+    /**
+     * @Route("/city//edit/{city}", methods={"GET", "POST"}, name="city_edit")
+     * @param Request $request
+     * @param City $city
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction(Request $request, City $city)
+    {
+        $form = $this->createForm(CityType::class, $city);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('city_view');
+        }
+
+        return $this->render('city/add.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 }

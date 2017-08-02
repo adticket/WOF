@@ -5,9 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\Group as BaseGroup;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Group
+ * @UniqueEntity("name", message="Gruppenname schon vergeben!")
  * @package AppBundle\Entity
  * @ORM\Table(name="fos_group")
  * @ORM\Entity()
@@ -24,8 +27,8 @@ class Group extends BaseGroup
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=1000)
+     * @Assert\Length(min="4", max="50", minMessage="Zu kurz!", maxMessage="Zu lang!")
+     * @ORM\Column(name="description", type="string", length=50)
      */
     private $description;
 
