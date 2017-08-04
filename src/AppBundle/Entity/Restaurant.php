@@ -124,6 +124,12 @@ class Restaurant
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\History", mappedBy="restaurant")
      */
     private $history;
+    /**
+     * One Restaurant has Many Meetings!
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Meeting", mappedBy="restaurant")
+     */
+    private $meeting;
 
     /**
      * One Restaurant has Many Ratings!

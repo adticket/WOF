@@ -2,8 +2,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Group;
+use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Restaurant;
 use AppBundle\Form\GroupType;
+use AppBundle\Form\MeetingType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -114,15 +116,13 @@ class GroupController extends Controller
      * @Route("/group/restaurants/list/{group}", name="group_listRestaurant")
      * @param Group $group
      * @param EntityManagerInterface $em
-     * @return Response
+     * @return RedirectResponse|Response
      */
     public function listRestaurantInGroupAction(Group $group, EntityManagerInterface $em)
     {
         if ($this->isUserInGroup($group)) {
-            $repository = $em->getRepository('AppBundle:Restaurant');
-            $restaurants = $repository->findBy([
-                'city' => $group->getCity()->getId(),
-            ]);
+            $repository = $em->getRepository('AppBundle:Group');
+            $restaurants = $repository->getAllRestaurantInCityofGroup($group, $em);
 
             return $this->render(':group:list_in_group.html.twig', [
                 "restaurants" => $restaurants,
@@ -178,6 +178,7 @@ class GroupController extends Controller
     /**
      * @Route("/group/delete/{group}", methods={"GET"}, name="group_delete")
      * @param Group $group
+     * @param EntityManagerInterface $em
      * @return RedirectResponse
      */
     public function deleteGroupAction(Group $group, EntityManagerInterface $em)
@@ -195,23 +196,118 @@ class GroupController extends Controller
 
     }
 
-    /* *
+    /**
      * @Route("/group/roll/{group}", methods={"GET"}, name="group_roll")
-     * /
-    public function rollAction(Group $group)
+     * @param Group $group
+     * @param EntityManagerInterface $em
+     * @return RedirectResponse|Response
+     */
+    public function rollAction(Group $group, EntityManagerInterface $em)
     {
         if ($this->isUserInGroup($group)) {
 
-            //DO SOMETHING
+            //if no restaurants in the group, error!
+            if ($group->getRestaurants()->count() === 0 )
+            {
+                $this->addFlash('error', 'Keine Restaurants in der Gruppe!');
 
-            //return new RedirectResponse($this->generateUrl('group_roll', ['restaurant' => $restaurant]));
+                return new RedirectResponse($this->generateUrl('group_details', ['group' => $group->getId()]));
+            }
+
+            //generate random int
+            $random = rand(0,$group->getRestaurants()->count()-1);
+
+            //get all restaurants of the group
+            $restaurants = $group->getRestaurants();
+
+            //decide or just random? do it here!
+            $restaurant = $restaurants[$random];
+
+            return $this->render(':group:roll.html.twig', [
+                'group' => $group,
+                'restaurant' => $restaurant->getname(),
+            ]);
         }
 
         $this->addFlash('error', 'Du kleiner Schlingel hast keine Erlaubnis dies zu tun!');
 
         return new RedirectResponse($this->generateUrl('group_view'));
+    }
 
-    }*/
+    /**
+     * @Route("/group/meeting/{group}", name="group_meeting")
+     * @param Group $group
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @return RedirectResponse|Response
+     */
+    public function meetingAction(Group $group, EntityManagerInterface $em, Request $request)
+    {
+        if ($this->isUserInGroup($group)) {
+
+            //if no restaurants in the group, error!
+            if ($group->getRestaurants()->count() === 0 )
+            {
+                $this->addFlash('error', 'Keine Restaurants in der Gruppe!');
+
+                return new RedirectResponse($this->generateUrl('group_details', ['group' => $group->getId()]));
+            }
+
+            $meeting = new Meeting();
+            $meeting->setGroup($group);
+
+            $form = $this->createForm(MeetingType::class, $meeting);
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid())
+            {
+                //TODO Send Mail to all UserInGroup
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($meeting);
+                $em->flush();
+
+                return new RedirectResponse($this->generateUrl('group_details', ['group' => $group->getId()]));
+            }
+
+            return $this->render(':group:meeting.html.twig', [
+                'group' => $group,
+                'form' => $form->createView(),
+            ]);
+        }
+
+        $this->addFlash('error', 'Du kleiner Schlingel hast keine Erlaubnis dies zu tun!');
+
+        return new RedirectResponse($this->generateUrl('group_view'));
+    }
+
+    /* public function createAction(Request $request)
+    {
+        // 1) build the form
+        $group = new Group();
+        $form = $this->createForm(GroupType::class, $group);
+
+        // 2) handle the submit
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            //3.1 add the creater in the pivot table
+            $user = $this->getUser();
+            $user->addGroup($group);
+            $group->setCreatedBy($user);
+
+
+            // 4) Save it!
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($group);
+            $em->flush();
+
+            return $this->redirectToRoute('group_view');
+        }
+
+        return $this->render('group/create.html.twig', ['form' => $form->createView(),]);
+    }
+     *
+    */
 
     /**
      * Check if the current user is in the given group

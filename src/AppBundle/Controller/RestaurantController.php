@@ -17,8 +17,10 @@ class RestaurantController extends Controller
 {
     /**
      * @Route("/restaurant/view", name="restaurant_view")
+     * @param EntityManagerInterface $em
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function viewAction(Request $request, EntityManagerInterface $em)
+    public function viewAction(EntityManagerInterface $em)
     {
         $repository = $em->getRepository('AppBundle:City');
         $cities = $repository->findAll();
@@ -44,6 +46,8 @@ class RestaurantController extends Controller
 
     /**
      * @Route("/restaurant/add", name="restaurant_add")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function addAction(Request $request)
     {

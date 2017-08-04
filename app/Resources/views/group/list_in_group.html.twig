@@ -20,6 +20,8 @@
 
         {% for restaurant in restaurants %}
             <tr>
+                <!-- TODO: if the restaurant new give him a "NEW" Label!-->
+
                 <td>{{ restaurant.name }}</td>
                 <td>
                     {% for cat in restaurant.categories.values %}

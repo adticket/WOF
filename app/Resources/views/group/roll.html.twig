@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-empty
+    Restaurant: {{ restaurant }}
+
 {% endblock %}
 
 {% block description %}
-empty
+    <a class="btn btn-default btn-sm btn-block"
+       href="{{ path('group_details', { 'group': group.id}) }}">Zurück</a>
 {% endblock %}
