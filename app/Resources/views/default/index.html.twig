@@ -42,7 +42,7 @@
                         <td></td>
                     </tr>
                     {% for meet in meeting %}
-                        <tr {% if meet.visitAt|date("Y-m-d") == "now"|date("Y-m-d") %} class="danger" {% endif %}>
+                        <tr{% if meet.visitAt|date("Y-m-d") == "now"|date("Y-m-d") %} class="danger" {% endif %}>
                             <td>
                                 {{ meet.visitAt|date("d.m.Y H:i") }} Uhr
                             </td>

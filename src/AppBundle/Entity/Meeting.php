@@ -84,7 +84,7 @@ class Meeting
     }
 
     /**
-     * @return mixed
+     * @return Group
      */
     public function getGroup()
     {
@@ -92,17 +92,15 @@ class Meeting
     }
 
     /**
-     * @param mixed $group
-     * @return Meeting
+     * @param Group $group
      */
     public function setGroup($group)
     {
         $this->group = $group;
-        return $this;
     }
 
     /**
-     * @return mixed
+     * @return Restaurant
      */
     public function getRestaurant()
     {
@@ -110,13 +108,11 @@ class Meeting
     }
 
     /**
-     * @param mixed $restaurant
-     * @return Meeting
+     * @param Restaurant $restaurant
      */
     public function setRestaurant($restaurant)
     {
         $this->restaurant = $restaurant;
-        return $this;
     }
 }
 
