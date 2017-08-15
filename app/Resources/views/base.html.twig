@@ -8,9 +8,21 @@
     <title>{% block title %}WOF{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 
+
+    {% stylesheets
+        'css/bootstrap.min.css'
+        'css/main.css'
+        filter='cssrewrite' output='css/compiled/app.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+    {% javascripts
+    'js/jquery-3.2.1.min.js'
+    'js/bootstrap.min.js'
+    output='js/compiled/app.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 </head>
 
 <!-- in my overall is the color definition for the hole page -->
@@ -23,6 +35,11 @@
             {% block description %}{% endblock %}
         </div>
         <div class="col-md-9 inner-body">
+            {% for message in app.flashes('error') %}
+                <div class="flash-notice">
+                    <div class="alert alert-danger" role="alert">{{ message }}</div>
+                </div>
+            {% endfor %}
             {% block body %}{% endblock %}
         </div>
     </div>
@@ -30,8 +47,7 @@
 
 {% include 'partials/footer.html.twig' ignore missing %}
 
-<script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+
 
 </body>
 

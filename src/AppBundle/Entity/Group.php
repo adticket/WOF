@@ -5,14 +5,19 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\Group as BaseGroup;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
  * Class Group
+ * @UniqueEntity("name", message="Gruppenname schon vergeben!")
  * @package AppBundle\Entity
  * @ORM\Table(name="fos_group")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\GroupRepository")
  */
-class Group extends BaseGroup
+class Group extends BaseGroup implements DataTransformerInterface
 {
 
     /**
@@ -24,8 +29,8 @@ class Group extends BaseGroup
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=1000)
+     * @Assert\Length(min="4", max="50", minMessage="Zu kurz!", maxMessage="Zu lang!")
+     * @ORM\Column(name="description", type="string", length=50)
      */
     private $description;
 
@@ -68,6 +73,11 @@ class Group extends BaseGroup
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\History", mappedBy="group")
      */
     private $history;
+    /**
+     * One Group has many visits!
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Meeting", mappedBy="group")
+     */
+    private $meeting;
 
     /**
      * @var ArrayCollection
@@ -248,6 +258,76 @@ class Group extends BaseGroup
         }
 
         return $this;
+    }
+
+    /**
+     * @return Meeting
+     */
+    public function getMeeting()
+    {
+        return $this->meeting;
+    }
+
+    /**
+     * @param Meeting $meeting
+     * @return Group
+     */
+    public function setMeeting($meeting)
+    {
+        $this->meeting = $meeting;
+        return $this;
+    }
+
+
+
+    //------------------------------------------------------------------
+
+    /**
+     * Transforms an object (issue) to a string (number).
+     *
+     * @param  Issue|null $issue
+     * @return string
+     */
+    public function transform($issue)
+    {
+        if (null === $issue) {
+            return '';
+        }
+
+        return $issue->getId();
+    }
+
+    /**
+     * Transforms a string (number) to an object (issue).
+     *
+     * @param  string $issueNumber
+     * @return Issue|null
+     * @throws TransformationFailedException if object (issue) is not found.
+     */
+    public function reverseTransform($issueNumber)
+    {
+        // no issue number? It's optional, so that's ok
+        if (!$issueNumber) {
+            return;
+        }
+
+        $issue = $this->em
+            ->getRepository(Issue::class)
+            // query for the issue with this id
+            ->find($issueNumber)
+        ;
+
+        if (null === $issue) {
+            // causes a validation error
+            // this message is not shown to the user
+            // see the invalid_message option
+            throw new TransformationFailedException(sprintf(
+                'An issue with number "%s" does not exist!',
+                $issueNumber
+            ));
+        }
+
+        return $issue;
     }
 
 

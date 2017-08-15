@@ -2,16 +2,74 @@
 
 {% block body %}
 
-    <h1>Hallo!</h1>
-    <p>Trete Gruppen bei um mit deinen Freunden Essen zu gehen. In Zukunkft kommen noch viele weitere coole Features.
-        Bleibe gespannt!</p>
-    <p>Sollte es noch keine Gruppe geben der du beitreten magst kannst du einfach eine eigene Erstellen.</p>
-    <p>Pflege weitere Restaurants ein und versehe sie mit passenden Kategorien. Sollte mal keine passende Kategorie da
-        sein,</p>
-    <p>pflege sie einfach nach. Ganz einfach und intuitiv. <div class="text-muted"> -TheDome</div> </p>
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Hallo <small>{{ user.username }},</small></h1>
+            <p>und willkommen hier im MitEsser-Portal.</p>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <p>Trete Gruppen bei um mit deinen Freunden Essen zu gehen. In Zukunkft kommen noch viele weitere coole Features.
+                Bleibe gespannt!</p>
+            <p>Sollte es noch keine Gruppe geben der du beitreten magst kannst du einfach eine eigene Erstellen.</p>
+            <p>Pflege weitere Restaurants ein und versehe sie mit passenden Kategorien. Sollte mal keine passende Kategorie da
+                sein,</p>
+            <p>pflege sie einfach nach. Ganz einfach!</p>
+            <div class="text-muted">TheDome</div>
+        </div>
+    </div>
+
+    {# just "meetings" doenst work well#}
+    {% if meetings.0 is not empty %}
+        <h3>Anstehende Verabredungen</h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">Uhrzeit</th>
+                    <th class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">Restaurant</th>
+                    <th class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for meeting in meetings %}
+                    {% if meeting is not empty %}
+                    <tr class="active">
+                        <td><b>{{ meeting.0.group.name }}</b></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    {% for meet in meeting %}
+                        <tr{% if meet.visitAt|date("Y-m-d") == "now"|date("Y-m-d") %} class="danger" {% endif %}>
+                            <td>
+                                {{ meet.visitAt|date("d.m.Y H:i") }} Uhr
+                            </td>
+                            <td>{{ meet.restaurant.name }}</td>
+                            <td>
+                                <a class="btn btn-sm btn-default" role="button"
+                                   href="{% if 'http' not in meet.restaurant.website %}http://{% endif %}{{ meet.restaurant.website }}"
+                                   target="_blank">
+                                    <span class="glyphicon glyphicon glyphicon-globe" aria-hidden="true"></span>
+                                </a>
+
+                                <a class="btn btn-sm btn-default" role="button" target="_blank"
+                                   href="{{ meet.restaurant.genMapsLink }}">
+                                    <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                 {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
 
     {% if user.groups is not empty %}
-        <h2>Deine Gruppen:</h2>
+        <h3>Deine Gruppen</h3>
         <table class="table table- table-responsive">
             <thead>
             <tr>
@@ -41,9 +99,13 @@
 {% endblock %}
 
 {% block description %}
-    <p>Das WOF ist ein Projekt für mich um mit den TEchnologien die wir benutzen in Verbindung zu kommen.</p>
-    <p>Manche Sachen haben vielleicht Bugs, oder sind nicht komplett fertig, aber so ist das halt...</p>
-    <p>Es werden noch coole Weiterentwicklungen kommen, soetwas wie eine Karte auf denen die Restaurants angezeigt werden sollen.</p>
+    <ul class="list-group">
+        <li class="list-group-item"><b>Deine Gruppen</b><span class="badge">{{ user.groups.count }}</span></li>
+        {% for group in user.groups %}
+            <li class="list-group-item">{{ group.name }}
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
 
 

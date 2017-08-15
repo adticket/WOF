@@ -17,25 +17,33 @@ class RestaurantController extends Controller
 {
     /**
      * @Route("/restaurant/view", name="restaurant_view")
+     * @param EntityManagerInterface $em
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function viewAction(Request $request, EntityManagerInterface $em)
+    public function viewAction(EntityManagerInterface $em)
     {
+        $repository = $em->getRepository('AppBundle:City');
+        $cities = $repository->findAll();
 
+        $restaurants = [];
         $repository = $em->getRepository('AppBundle:Restaurant');
-        $restaurants = $repository->findAll();
 
-        $userGroupIds = $this->getUser()->getGroups()->map(function ($entity) {
-            return $entity->getId();
-        });
+        foreach ($cities as $city) {
+            $cityRestaurants = $repository->findBy(["city" => $city]);
+            if ($cityRestaurants) {
+                $restaurants[] = $cityRestaurants;
+            }
+        }
 
         return $this->render('restaurant/view.html.twig', [
             "restaurants" => $restaurants,
-            "groups_for_user" => $userGroupIds,
         ]);
     }
 
     /**
      * @Route("/restaurant/add", name="restaurant_add")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function addAction(Request $request)
     {
@@ -43,8 +51,7 @@ class RestaurantController extends Controller
         $form = $this->createForm(RestaurantType::class, $restaurant);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($restaurant);
             $em->flush();
@@ -53,24 +60,32 @@ class RestaurantController extends Controller
         }
 
 
-        return $this->render('restaurant/add.html.twig',['form' => $form->createView(),]);
+        return $this->render('restaurant/add.html.twig', ['form' => $form->createView(),]);
     }
-}
 
-/*
- * $category = new Category();
-        $form = $this->createForm(CategoryType::class, $category);
+    /**
+     * @Route("/restaurant/edit/{restaurant}", methods={"GET", "POST"}, name="restaurant_edit")
+     * @param Request $request
+     * @param Restaurant $restaurant
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction(Request $request, Restaurant $restaurant)
+    {
+        $form = $this->createForm(RestaurantType::class, $restaurant);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($category);
-            $em->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            return $this->redirectToRoute('category_list');
+            //TODO Suche alle Gruppen mit diesem Restaurant und schaue ob die Standorte passen, wenn nicht, entferne dieses Restaurant von der Gruppe!!!
+
+
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('restaurant_view');
         }
 
+        return $this->render('restaurant/add.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 
-        return $this->render('/category/add.html.twig',['form' => $form->createView(),]);
- */
+}

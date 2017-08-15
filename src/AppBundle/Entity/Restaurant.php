@@ -4,7 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Restaurant
@@ -25,6 +26,12 @@ class Restaurant
 
     /**
      * @var string
+     * @Assert\Regex(
+     *     pattern     = "/^[a-z0-9öäüß&\. ]+$/i",
+     *     htmlPattern = "^[a-zA-Z0-9öäüßÖÄÜ&\. ]+$",
+     *     message="Nur . oder Buchstaben oder Zahlen!"
+     * )
+     * @Assert\Length(min=3, max=24, minMessage="Name zu kurz!", maxMessage="Name zu lang!")
      *
      * @ORM\Column(name="restaurant_name", type="string")
      */
@@ -32,24 +39,40 @@ class Restaurant
 
     /**
      * @var string
-     *
+     * @Assert\Regex(
+     *      pattern="/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i",
+     *      htmlPattern="^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$",
+     *      message = "Die URL '{{ value }}' ist nicht korrekt!",
+     * )
      * @ORM\Column(name="website", type="string", nullable=true)
      */
     private $website;
 
     /**
      * @var string
-     *
+     * @Assert\Regex(
+     *     pattern     = "/^[a-zöäüß\.\- ]+$/i",
+     *     htmlPattern = "^[a-zA-ZöäüßÖÄÜ\.\- ]+$",
+     *     message="Nur . oder Buchstaben!"
+     * )
+     * @Assert\Length(min=3, max=24, minMessage="Name zu kurz!", maxMessage="Name zu lang!")
      * @ORM\Column(name="street", type="string", length=100, nullable=true)
      */
     private $street;
 
     /**
      * @var string
-     *
+     * @Assert\Regex(
+     *     pattern     = "/[0-9]+[ ]?[a-z]?$/i",
+     *     htmlPattern = "^[0-9]+[ ]?[a-zA-Z]?$",
+     *     message="Ungültige Hausnummer!"
+     * )
+     * @Assert\Length(min="1", max="10", maxMessage="Zu lang", minMessage="Bitte eintragen")
      * @ORM\Column(name="house_no", type="string", length=10, nullable=true)
      */
     private $house_no;
+    // Der Check (Assert) der Hausnummer ist nicht korrekt!
+    // Er wird nicht richtig angezeigt und funktioniert auch nicht gut!
 
     /**
      * @var \DateTime
@@ -76,6 +99,12 @@ class Restaurant
     /**
      * Many Restaurants has Many Categories
      * @var ArrayCollection
+     * @Assert\Count(
+     *      min = 1,
+     *      max = 5,
+     *      minMessage = "Wähle mind. eine Kategorie, max. fünf",
+     *      maxMessage = "Wähle max. fünf Kategorien, mind. eine"
+     * )
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Category", inversedBy="restaurants")
      * @ORM\JoinTable(name="restaurant_category")
      */
@@ -83,7 +112,7 @@ class Restaurant
 
     /**
      * Many Restaurants have/are in one City
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\City", inversedBy="restaurant")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\City", inversedBy="restaurants")
      * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
      * @var City
      */
@@ -95,6 +124,12 @@ class Restaurant
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\History", mappedBy="restaurant")
      */
     private $history;
+    /**
+     * One Restaurant has Many Meetings!
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Meeting", mappedBy="restaurant")
+     */
+    private $meeting;
 
     /**
      * One Restaurant has Many Ratings!
@@ -345,7 +380,7 @@ class Restaurant
         $street = str_replace(' ', '+', $this->getStreet());
         $hno = str_replace(' ', '+', $this->getHouseNo());
 
-        $url = "https://maps.google.com?q=" . $city .'+'. $street .'+'. $hno;
+        $url = "https://maps.google.com?q=" . $city . '+' . $street . '+' . $hno;
 
         return $url;
     }

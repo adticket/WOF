@@ -2,7 +2,7 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\Group;
+//use AppBundle\Entity\Group;
 
 /**
  * UserRepository

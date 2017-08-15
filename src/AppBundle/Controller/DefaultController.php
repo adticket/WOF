@@ -22,9 +22,12 @@ class DefaultController extends Controller
         $repository = $em->getRepository('AppBundle:User');
         $user = $repository->find($this->getUser());
 
+        $repository = $em->getRepository('AppBundle:Meeting');
+        $meetings = $repository->getAllMeetingsOfUser($this->getUser());
 
         return $this->render('default/index.html.twig', [
             'user' => $user,
+            'meetings' => $meetings,
         ]);
     }
 }

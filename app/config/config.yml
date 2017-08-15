@@ -83,3 +83,6 @@ fos_user:
     from_email:
         address: "domenic.gerhold@adticket.de" #"%mailer_user%"
         sender_name: "WOF-Mail:Domenic.Gerhold@adticket.de" #"%mailer_user%"
+
+sc_datetimepicker:
+    picker: ~

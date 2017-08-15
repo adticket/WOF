@@ -1,57 +1,47 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-
-    {% for message in app.flashes('error') %}
-        <div class="flash-notice">
-            {{ message }}
-        </div>
-    {% endfor %}
-
     <b>Alle Gruppen:</b>
     <div class="table-responsive">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Beschreibung</th>
-            <th>Stadt</th>
-            <th>Gründer</th>
-            <th>Mitglieder</th>
-            <th></th>
-        </tr>
-        </thead>
-
-        <tbody>
-        {% for group in groups %}
+        <table class="table">
+            <thead>
             <tr>
-                <td>
-                    {% if group.id not in groups_for_user %}
-                        {{ group.name }}
-                    {% else %}
-                        <a href="{{ path('group_details', { 'group': group.id }) }}">{{ group.name }}</a>
-                    {% endif %}
-                </td>
-                <td>{{ group.description }}</td>
-                <td>{{ group.city.cityName }}</td>
-                <td>{{ group.createdBy }}</td>
-                <td><span class="badge center-block">{{ group.users.count }}</span></td>
-                <td>
-                    {% if group.id not in groups_for_user %}
-                        <a class="btn btn-success btn-block btn-sm"
-                           href="{{ path('group_join', { 'group': group.id }) }}">Beitreten</a>
-                    {% else %}
-                        <a class="btn btn-info btn-block btn-sm"
-                           href="{{ path('group_details', { 'group': group.id }) }}">Details</a>
-                    {% endif %}
-                </td>
-
+                <th>Name</th>
+                <th>Beschreibung</th>
+                <th>Stadt</th>
+                <th>Gründer</th>
+                <th>Mitglieder</th>
+                <th></th>
             </tr>
+            </thead>
 
-        {% endfor %}
-        </tbody>
-    </table>
+            <tbody>
+            {% for group in groups %}
+                <tr>
+                    <td>
+                        {% if group.id not in groups_for_user %}
+                            {{ group.name }}
+                        {% else %}
+                            <a href="{{ path('group_details', { 'group': group.id }) }}">{{ group.name }}</a>
+                        {% endif %}
+                    </td>
+                    <td>{{ group.description }}</td>
+                    <td>{{ group.city.cityName }}</td>
+                    <td>{{ group.createdBy }}</td>
+                    <td><span class="badge center-block">{{ group.users.count }}</span></td>
+                    <td>
+                        {% if group.id not in groups_for_user %}
+                            <a class="btn btn-success btn-block btn-sm"
+                               href="{{ path('group_join', { 'group': group.id }) }}">Beitreten</a>
+                        {% else %}
+                            <a class="btn btn-info btn-block btn-sm"
+                               href="{{ path('group_details', { 'group': group.id }) }}">Details</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 
 {% endblock %}
@@ -60,5 +50,6 @@
     <a class="btn btn-success btn-sm btn-block"
        href="{{ path('group_create') }}">Neue Gruppe erstellen</a>
     <br>
-    <p>Sollte mal keine Gruppe vorhanden sein die dir zusagt, erstelle deine eigene und lass deine Freunde dir beitreten!</p>
+    <p>Sollte mal keine Gruppe vorhanden sein die dir zusagt, erstelle deine eigene und lass deine Freunde dir
+        beitreten!</p>
 {% endblock %}

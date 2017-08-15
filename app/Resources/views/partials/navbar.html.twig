@@ -44,11 +44,12 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <p class="navbar-text navbar-right">
-                        Angemeldet als "<a href="{{ path('user_profile') }}"
-                                          class="navbar-link"><b>{{ app.user.username }}</b></a>"
-                    <li><a href="{{ path('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-                    </p>
+                    <li>
+                        <a href="{{ path('user_profile') }}" class="navbar-link"><b>{{ app.user.username }}</b></a>
+                    </li>
+                    <li>
+                        <a href="{{ path('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                    </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->

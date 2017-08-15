@@ -4,10 +4,12 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * City
- *
+ * @UniqueEntity("cityName", message="Diese Stadt gibt es schon!")
  * @ORM\Table(name="city")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CityRepository")
  */
@@ -24,7 +26,12 @@ class City
 
     /**
      * @var string
-     *
+     * @Assert\Regex(
+     *     pattern     = "/^[a-zöäüß\. ]+$/i",
+     *     htmlPattern = "^[a-zA-ZöäüßÖÄÜ\. ]+$",
+     *     message="Nur . oder Buchstaben!"
+     * )
+     * @Assert\Length(min=3, max=24, minMessage="Name zu kurz!", maxMessage="Name zu lang!")
      * @ORM\Column(name="cityName", type="string", length=255, unique=true)
      */
     private $cityName;

@@ -6,8 +6,12 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
+ * @UniqueEntity("username", message="Username schon vergeben!")
+ * @UniqueEntity("email", message="E-Mail schon vergeben!")
  * @package AppBundle\Entity
  * @ORM\Entity
  * @ORM\Table(name="fos_user")

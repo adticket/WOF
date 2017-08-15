@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class ProfileController
@@ -15,8 +14,10 @@ class ProfileController extends Controller
 {
     /**
      * @Route("/user/profile", name="user_profile")
+     * @param EntityManagerInterface $em
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function user_profileAction(Request $request, EntityManagerInterface $em)
+    public function user_profileAction(EntityManagerInterface $em)
     {
         $repository = $em->getRepository('AppBundle:User');
         $user = $repository->find($this->getUser());

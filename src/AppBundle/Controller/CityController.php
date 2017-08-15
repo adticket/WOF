@@ -2,12 +2,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\City;
-
 use AppBundle\Form\CityType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -16,11 +14,12 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class CityController extends Controller
 {
-
     /**
      * @Route("/city/view", name="city_view")
+     * @param EntityManagerInterface $em
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function viewAction(Request $request, EntityManagerInterface $em)
+    public function viewAction(EntityManagerInterface $em)
     {
 
         $repository = $em->getRepository('AppBundle:City');
@@ -54,5 +53,26 @@ class CityController extends Controller
         }
 
         return $this->render('/city/add.html.twig',['form' => $form->createView(),]);
+    }
+
+    /**
+     * @Route("/city//edit/{city}", methods={"GET", "POST"}, name="city_edit")
+     * @param Request $request
+     * @param City $city
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction(Request $request, City $city)
+    {
+        $form = $this->createForm(CityType::class, $city);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('city_view');
+        }
+
+        return $this->render('city/add.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

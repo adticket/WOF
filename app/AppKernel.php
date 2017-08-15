@@ -19,6 +19,8 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new SC\DatetimepickerBundle\SCDatetimepickerBundle(),
+            new Cron\CronBundle\CronCronBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

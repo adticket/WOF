@@ -7,7 +7,7 @@ use AppBundle\Form\CategoryType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
+//use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -18,6 +18,8 @@ class CategoryController extends Controller
 {
     /**
      * @Route("/category/view", name="category_view")
+     * @param EntityManagerInterface $em
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function viewAction(EntityManagerInterface $em)
     {
@@ -33,10 +35,10 @@ class CategoryController extends Controller
         ]);
     }
 
-    /**
+    /* *
      * -->wird momentan nicht genutzt!
      * @Route("/api/categories/all", name="api_categories_all")
-     */
+     * /
     public function getEntriesAction()
     {
         $entries = $this->get('doctrine')->getManager()->getRepository('AppBundle:Category')->findAll();
@@ -51,7 +53,7 @@ class CategoryController extends Controller
         }
 
         return new JsonResponse(json_encode($response));
-    }
+    }*/
 
     /**
      * @Route("/category/add", name="category_add")
@@ -75,4 +77,26 @@ class CategoryController extends Controller
 
         return $this->render('category/add.html.twig', ['form' => $form->createView(),]);
     }
+
+    /**
+     * @Route("/category/edit/{category}", methods={"GET", "POST"}, name="category_edit")
+     * @param Request $request
+     * @param Category $category
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction(Request $request, Category $category)
+    {
+        $form = $this->createForm(CategoryType::class, $category);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('category_view');
+        }
+
+        return $this->render('category/add.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
 }
