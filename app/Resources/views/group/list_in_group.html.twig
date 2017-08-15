@@ -4,61 +4,65 @@
 
     <b>Alle Restaurants:</b>
     <div class="table-responsive">
-    <table class="table">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Kategorien</th>
-        <th>Stadt</th>
-        <th>Straße</th>
-        <th></th>
-        <th></th>
-    </tr>
-    </thead>
-
-    <tbody>
-
-        {% for restaurant in restaurants %}
+        <table class="table">
+            <thead>
             <tr>
-                <!-- TODO: if the restaurant new give him a "NEW" Label!-->
-
-                <td>{{ restaurant.name }}</td>
-                <td>
-                    {% for cat in restaurant.categories.values %}
-                        <span class="label label-default">{{ cat.categoryName }}</span>
-                    {% endfor %}
-                </td>
-                <td>{{ restaurant.city.cityName }}</td>
-                <td>{{ restaurant.street }} {{ restaurant.houseNo }}</td>
-                <td>
-                    {% if restaurant not in group.restaurants %}
-                        <a class="btn btn-success btn-block btn-sm"
-                           href="{{ path('group_addRestaurant', { 'group': group.id, 'restaurant': restaurant.id }) }}">Hinzufügen</a>
-                    {% else %}
-                        <a class="btn btn-danger btn-block btn-sm"
-                           href="{{ path('group_removeRestaurant', { 'group': group.id, 'restaurant': restaurant.id }) }}">Entfernen</a>
-                    {% endif %}
-                </td>
-                <td>{% if 'http' not in restaurant.website %}
-                        <a class="btn btn-default" role="button" href="http://{{ restaurant.website }}" target="_blank">
-                            <span class="glyphicon glyphicon glyphicon-globe" aria-hidden="true"></span>
-                        </a>
-                    {% else %}
-                        <a class="btn btn-default" role="button" href="{{ restaurant.website }}" target="_blank">
-                            <span class="glyphicon glyphicon glyphicon-globe" aria-hidden="true"></span>
-                        </a>
-                    {% endif %}
-                    <a class="btn btn-default" role="button" target="_blank" href="{{ restaurant.genMapsLink }}">
-                        <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-                    </a>
-                </td>
+                <th>Name</th>
+                <th>Kategorien</th>
+                <th>Stadt</th>
+                <th>Straße</th>
+                <th></th>
+                <th></th>
             </tr>
+            </thead>
 
-        {% endfor %}
-        </tbody>
+            <tbody>
+
+            {% for restaurant in restaurants %}
+                <tr>
+                    <td>
+                        {{ restaurant.name }}
+                    </td>
+                    <td>
+                        {% if restaurant.createdAt|date('Y-m-d') > "-7 days"|date('Y-m-d') %}
+                            <span class="label label-danger">NEU</span>
+                        {% endif %}
+                        {% for cat in restaurant.categories.values %}
+                            <span class="label label-default">{{ cat.categoryName }}</span>
+                        {% endfor %}
+                    </td>
+                    <td>{{ restaurant.city.cityName }}</td>
+                    <td>{{ restaurant.street }} {{ restaurant.houseNo }}</td>
+                    <td>
+                        {% if restaurant not in group.restaurants %}
+                            <a class="btn btn-success btn-block btn-sm"
+                               href="{{ path('group_addRestaurant', { 'group': group.id, 'restaurant': restaurant.id }) }}">Hinzufügen</a>
+                        {% else %}
+                            <a class="btn btn-danger btn-block btn-sm"
+                               href="{{ path('group_removeRestaurant', { 'group': group.id, 'restaurant': restaurant.id }) }}">Entfernen</a>
+                        {% endif %}
+                    </td>
+                    <td>{% if 'http' not in restaurant.website %}
+                            <a class="btn btn-default" role="button" href="http://{{ restaurant.website }}"
+                               target="_blank">
+                                <span class="glyphicon glyphicon glyphicon-globe" aria-hidden="true"></span>
+                            </a>
+                        {% else %}
+                            <a class="btn btn-default" role="button" href="{{ restaurant.website }}" target="_blank">
+                                <span class="glyphicon glyphicon glyphicon-globe" aria-hidden="true"></span>
+                            </a>
+                        {% endif %}
+                        <a class="btn btn-default" role="button" target="_blank" href="{{ restaurant.genMapsLink }}">
+                            <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                        </a>
+                    </td>
+                </tr>
+
+            {% endfor %}
+            </tbody>
         </table>
-        </div>
-        {% endblock %}
+    </div>
+{% endblock %}
 
         {% block description %}
             <a class="btn btn-default btn-sm btn-block"

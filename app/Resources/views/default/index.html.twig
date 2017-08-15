@@ -16,14 +16,13 @@
             <p>Sollte es noch keine Gruppe geben der du beitreten magst kannst du einfach eine eigene Erstellen.</p>
             <p>Pflege weitere Restaurants ein und versehe sie mit passenden Kategorien. Sollte mal keine passende Kategorie da
                 sein,</p>
-            <p>pflege sie einfach nach. Ganz einfach!
-            <div class="text-muted">TheDome</div> </p>
+            <p>pflege sie einfach nach. Ganz einfach!</p>
+            <div class="text-muted">TheDome</div>
         </div>
     </div>
 
-
-
-    {% if meetings is not empty %}
+    {# just "meetings" doenst work well#}
+    {% if meetings.0 is not empty %}
         <h3>Anstehende Verabredungen</h3>
         <div class="table-responsive">
             <table class="table">
@@ -36,14 +35,17 @@
                 </thead>
                 <tbody>
                 {% for meeting in meetings %}
+                    {% if meeting is not empty %}
                     <tr class="active">
                         <td><b>{{ meeting.0.group.name }}</b></td>
                         <td></td>
                         <td></td>
                     </tr>
                     {% for meet in meeting %}
-                        <tr>
-                            <td>{{ meet.visitAt|date("d.m.Y H:i") }} Uhr</td>
+                        <tr {% if meet.visitAt|date("Y-m-d") == "now"|date("Y-m-d") %} class="danger" {% endif %}>
+                            <td>
+                                {{ meet.visitAt|date("d.m.Y H:i") }} Uhr
+                            </td>
                             <td>{{ meet.restaurant.name }}</td>
                             <td>
                                 <a class="btn btn-sm btn-default" role="button"
@@ -59,7 +61,7 @@
                             </td>
                         </tr>
                     {% endfor %}
-
+                 {% endif %}
                 {% endfor %}
                 </tbody>
             </table>

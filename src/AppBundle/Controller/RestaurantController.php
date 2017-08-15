@@ -27,6 +27,7 @@ class RestaurantController extends Controller
 
         $restaurants = [];
         $repository = $em->getRepository('AppBundle:Restaurant');
+
         foreach ($cities as $city) {
             $cityRestaurants = $repository->findBy(["city" => $city]);
             if ($cityRestaurants) {
@@ -34,13 +35,8 @@ class RestaurantController extends Controller
             }
         }
 
-        $userGroupIds = $this->getUser()->getGroups()->map(function ($entity) {
-            return $entity->getId();
-        });
-
         return $this->render('restaurant/view.html.twig', [
             "restaurants" => $restaurants,
-            "groups_for_user" => $userGroupIds,
         ]);
     }
 

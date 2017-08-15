@@ -29,6 +29,10 @@
                     <tr>
                         <td>{{ restaurant.name }}</td>
                         <td>
+                            {% if restaurant.createdAt|date('Y-m-d') > "-7 days"|date('Y-m-d') %}
+                                <span class="label label-danger">NEU</span>
+                            {% endif %}
+
                             {% for cat in restaurant.categories.values %}
                                 <span class="label label-default">{{ cat.categoryName }}</span>
                             {% endfor %}

@@ -23,7 +23,6 @@ class MeetingRepository extends \Doctrine\ORM\EntityRepository
 
         foreach ($userGroups as $userGroup)
         {
-            $group_id = $userGroup->getId();
             $em = $this->getEntityManager();
             $qb = $em->createQueryBuilder();
 

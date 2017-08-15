@@ -17,6 +17,11 @@
 <body class="overall-background">
 
 <div class="container-fluid">
+    {% for message in app.flashes('error') %}
+        <div class="flash-notice">
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+        </div>
+    {% endfor %}
     {% block body %}{% endblock %}
 </div>
 

@@ -57,13 +57,17 @@ class GroupController extends Controller
         $repository = $em->getRepository('AppBundle:Group');
         $groups = $repository->findAll();
 
-        $userGroupIds = $this->getUser()->getGroups()->map(function ($entity) {
-            return $entity->getId();
-        });
+        $userGroups = $this->getUser()->getGroups();
+        $userGroupsArray = [];
+
+        foreach ($userGroups as $userGroup)
+        {
+            $userGroupsArray[] = $userGroup->getId();
+        }
 
         return $this->render('group/view.html.twig', [
             "groups" => $groups,
-            "groups_for_user" => $userGroupIds,
+            "groups_for_user" => $userGroupsArray,
         ]);
     }
 
@@ -98,7 +102,7 @@ class GroupController extends Controller
      * @param Group $group
      * @return string
      */
-    public function detailsAction(Group $group, EntityManagerInterface $em)
+    public function detailsAction(Group $group)
     {
         if ($this->isUserInGroup($group)) {
             $meetings = $group->getMeeting();
@@ -202,10 +206,9 @@ class GroupController extends Controller
     /**
      * @Route("/group/roll/{group}", methods={"GET"}, name="group_roll")
      * @param Group $group
-     * @param EntityManagerInterface $em
      * @return RedirectResponse|Response
      */
-    public function rollAction(Group $group, EntityManagerInterface $em)
+    public function rollAction(Group $group)
     {
         if ($this->isUserInGroup($group)) {
 
@@ -240,11 +243,10 @@ class GroupController extends Controller
     /**
      * @Route("/group/meeting/{group}", name="group_meeting")
      * @param Group $group
-     * @param EntityManagerInterface $em
      * @param Request $request
      * @return RedirectResponse|Response
      */
-    public function meetingAction(Group $group, EntityManagerInterface $em, Request $request)
+    public function meetingAction(Group $group, Request $request)
     {
         if ($this->isUserInGroup($group)) {
 

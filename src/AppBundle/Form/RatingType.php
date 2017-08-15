@@ -15,11 +15,11 @@ class RatingType extends AbstractType
     {
         $builder
             ->add('ratingValue', RadioType::class, array(
-                'first' => '1',
-                'first' => '2',
-                'first' => '3',
-                'first' => '4',
-                'first' => '5',
+                'first'  => '1',
+                'second' => '2',
+                'third'  => '3',
+                'fourth' => '4',
+                'fifth'  => '5',
             ))
 
             ->add('ratingValue', RangeType::class, array(

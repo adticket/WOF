@@ -2,6 +2,7 @@
 
 {% block body %}
 
+    {% if categories is not empty %}
     <div class="table-responsive">
         <table class="table">
             <thead>
@@ -35,32 +36,9 @@
         </table>
     </div>
 
-    <!-- changeModal -->
-    <div class="modal fade" id="changeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {% form_theme form 'bootstrap_3_layout.html.twig' %}
-
-                    {{ form_start(form) }}
-                    {{ form_row(form.categoryName, { 'attr': {"placeholder":"max. 50 Zeichen"}, "label": "Kategoriename: " }) }}
-                    <button type="submit" class="btn btn-success">Eintragen</button>
-                    {{ form_end(form) }}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
-                    <button type="button" class="btn btn-success" id="saveChange">Speichern</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% else %}
+        <p>Noch keine Kategorien!</p>
+    {% endif %}
 
     <!-- deleteModal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -83,11 +61,6 @@
             </div>
         </div>
     </div>
-
-    <!--  -->
-    <script>
-
-    </script>
 
 {% endblock %}
 
