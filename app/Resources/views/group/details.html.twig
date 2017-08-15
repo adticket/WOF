@@ -2,12 +2,6 @@
 
 {% block body %}
 
-    {% for message in app.flashes('error') %}
-        <div class="flash-notice">
-            <div class="alert alert-danger" role="alert">{{ message }}</div>
-        </div>
-    {% endfor %}
-
     <h2 class="form-signin-heading">{{ group.name }}</h2>
 
     <div class="row">
@@ -15,11 +9,13 @@
             <a href="{{ path('group_listRestaurant', { 'group': group.id }) }}"
                class="btn btn-block btn-lg btn-default">Liste bearbeiten</a>
         </div>
+        {#
         <div class="col-md-4">
             <a href="{{ path('group_roll', { 'group': group.id }) }}" class="btn btn-block btn-lg btn-default">Essens Glückrad drehen!</a>
         </div>
-        <div class="col-md-4">
-            <a href="{{ path('group_meeting', { 'group': group.id }) }}" class="btn btn-block btn-lg btn-default">Planen</a>
+        #}
+        {#<div class="col-md-4">#}<div class="col-md-8">
+            <a href="{{ path('group_meeting', { 'group': group.id }) }}" class="btn btn-block btn-lg btn-default">Verabredung einrichten</a>
         </div>
     </div>
 
@@ -87,6 +83,19 @@
            href="{{ path('group_delete', { 'group': group.id }) }}">Gruppe löschen</a>
     {% endif %}
     <br>
+
+
+    {% if meetings is not empty %}
+        <ul class="list-group">
+            <li class="list-group-item"><b>Anstehende Verabredungen</b></li>
+        {% for meeting in meetings %}
+        <li class="list-group-item clearfix">{{ meeting.visitAt|date("d.m.Y H:i") }}
+            <div class="pull-right"> {{ meeting.restaurant.name }}</div>
+        </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
 
     <ul class="list-group">
         <li class="list-group-item clearfix"><b>Name</b>

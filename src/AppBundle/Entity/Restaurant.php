@@ -41,7 +41,7 @@ class Restaurant
      * @var string
      * @Assert\Regex(
      *      pattern="/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i",
-     *     htmlPattern="^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$",
+     *      htmlPattern="^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$",
      *      message = "Die URL '{{ value }}' ist nicht korrekt!",
      * )
      * @ORM\Column(name="website", type="string", nullable=true)
@@ -112,7 +112,7 @@ class Restaurant
 
     /**
      * Many Restaurants have/are in one City
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\City", inversedBy="restaurant")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\City", inversedBy="restaurants")
      * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
      * @var City
      */

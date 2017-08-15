@@ -1,7 +1,31 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    Restaurant: {{ restaurant }}
+
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+    {% block stylesheets %}
+        {{ form_stylesheet(form) }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ form_javascript(form) }}
+    {% endblock %}
+
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6 col col-sm-6">
+            {{ form_row(form.visitAt, {"label": "Datum"})}}
+        </div>
+        <div class="col-md-6 col-sm-6">
+            {{ form_row(form.restaurant, { 'attr': {"placeholder":""}, "label": "Restaurant: " }) }}
+        </div>
+    </div>
+
+
+    <button type="submit" class="btn btn-success">Termin erstellen</button>
+    {{ form_end(form) }}
+
 
 {% endblock %}
 

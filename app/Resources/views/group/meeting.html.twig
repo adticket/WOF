@@ -12,20 +12,77 @@
         {{ form_javascript(form) }}
     {% endblock %}
 
+    <h2 class="form-signin-heading">{{ group.name }}</h2>
+
     {{ form_start(form) }}
     <div class="row">
         <div class="col-md-6 col col-sm-6">
-            {{ form_row(form.visitAt, {"label": "Datum"})}}
+            {{ form_row(form.visitAt, {"label": "Datum"}) }}
         </div>
         <div class="col-md-6 col-sm-6">
             {{ form_row(form.restaurant, { 'attr': {"placeholder":""}, "label": "Restaurant: " }) }}
         </div>
     </div>
 
-
-    <button type="submit" class="btn btn-success">Termin erstellen</button>
+    <div class="row">
+        <div class="col-sm-6">
+            <button type="submit" class="btn btn-block btn-success">Termin erstellen</button>
+        </div>
+        <div class="col-sm-6">
+            <button type="button" id="randomize" class="btn btn-block btn-primary"><small>(optional)</small> Zufälliges Restaurant</button>
+        </div>
+    </div>
     {{ form_end(form) }}
 
+    <script>
+        function randomizeSelect(selectId/*, fieldId*/) {
+
+            var options = document.getElementById(selectId).children;
+
+            var random = Math.floor(options.length * (Math.random() % 1));
+
+            var option = options[random];
+            option.selected = true;
+
+            //document.getElementById(fieldId).value = option.innerHTML; // You can use .value instead in both places
+        }
+
+        //var values = {};
+
+        window.onload = function(e) {
+
+            /*document.onchange = function(e) { // Event Delegation: http://davidwalsh.name/event-delegate
+                var t = e.target;
+                if(t.tagName == "SELECT")
+                    document.getElementById(t.id.replace("Select","Label")).value = t.children[t.selectedIndex].innerHTML;
+            }*/
+            /*
+            document.oninput = function(e) {
+                var t = e.target;
+                if(t.tagName == "INPUT") {
+                    if(values.hasOwnProperty(t.id))
+                        var options = values[t.id];
+                    else
+                        var options = document.getElementById(t.id.replace("Label","Select")).children;
+
+                    var currentValue = t.value;
+
+                    for(i in options) {
+                        if(options[i].innerHTML == currentValue) { // Can also use .value
+                            options[i].selected = true;
+                            break;
+                        }
+                    }
+                }
+            }*/
+
+            document.getElementById("randomize").onclick = function(e) {
+                randomizeSelect("meeting_restaurant"/*, "rightLabel"*/);
+                //randomizeSelect("leftSelect", "leftLabel");
+                //randomizeSelect("rightSelect", "rightLabel");
+            }
+        }
+    </script>
 
 {% endblock %}
 

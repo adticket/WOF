@@ -1,6 +1,8 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\User;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * MeetingRepository
@@ -10,4 +12,32 @@ namespace AppBundle\Repository;
  */
 class MeetingRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param User $user
+     * @return array
+     */
+    public function getAllMeetingsOfUser(User $user)
+    {
+        $userGroups = $user->getGroups();
+        $meetings = [];
+
+        foreach ($userGroups as $userGroup)
+        {
+            $group_id = $userGroup->getId();
+            $em = $this->getEntityManager();
+            $qb = $em->createQueryBuilder();
+
+            $qb->select('u')
+                ->from('AppBundle:Meeting', 'u')
+                ->where('u.group = :identifier')
+                ->setParameter('identifier', $userGroup);
+
+            $query = $qb->getQuery();
+
+            $meetings[] = $query->getResult();
+                        //$query->getArrayResult();
+        }
+
+        return $meetings;
+    }
 }

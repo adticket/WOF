@@ -98,11 +98,14 @@ class GroupController extends Controller
      * @param Group $group
      * @return string
      */
-    public function detailsAction(Group $group)
+    public function detailsAction(Group $group, EntityManagerInterface $em)
     {
         if ($this->isUserInGroup($group)) {
+            $meetings = $group->getMeeting();
+
             return $this->render('group/details.html.twig', [
                 "group" => $group,
+                "meetings" => $meetings,
             ]);
         }
 

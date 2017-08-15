@@ -260,6 +260,26 @@ class Group extends BaseGroup implements DataTransformerInterface
         return $this;
     }
 
+    /**
+     * @return Meeting
+     */
+    public function getMeeting()
+    {
+        return $this->meeting;
+    }
+
+    /**
+     * @param Meeting $meeting
+     * @return Group
+     */
+    public function setMeeting($meeting)
+    {
+        $this->meeting = $meeting;
+        return $this;
+    }
+
+
+
     //------------------------------------------------------------------
 
     /**
