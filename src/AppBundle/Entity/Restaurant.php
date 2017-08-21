@@ -27,7 +27,7 @@ class Restaurant
     /**
      * @var string
      * @Assert\Regex(
-     *     pattern     = "/^[a-z0-9öäüß&\. ]+$/i",
+     *     pattern     = "/^[a-z0-9öäüß&'\. ]+$/i",
      *     htmlPattern = "^[a-zA-Z0-9öäüßÖÄÜ&\. ]+$",
      *     message="Nur . oder Buchstaben oder Zahlen!"
      * )
@@ -63,8 +63,8 @@ class Restaurant
     /**
      * @var string
      * @Assert\Regex(
-     *     pattern     = "/[0-9]+[ ]?[a-z]?$/i",
-     *     htmlPattern = "^[0-9]+[ ]?[a-zA-Z]?$",
+     *     pattern     = "/[0-9]+[ \-]?[a-z]?$/i",
+     *     htmlPattern = "^[0-9]+[ \-]?[a-zA-Z]?$",
      *     message="Ungültige Hausnummer!"
      * )
      * @Assert\Length(min="1", max="10", maxMessage="Zu lang", minMessage="Bitte eintragen")

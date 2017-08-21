@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MitEsser - Portal</title>
+</head>
+
+<body>
+<h1>Hallo <small>{{ username }},</small></h1>
+<div>
+    <p><b>{{ group.name }}</b> geht am <b>{{ meeting.visitAt|date('d.m.Y H:i') }}</b> essen.</p>
+    <p>Es wurde sich für das <b>{{ restaurant.name }}</b> entschieden.</p>
+    <br>
+    <p>Deine Gruppe würde dich bestimmt gerne bei dem Termin dabei haben!</p>
+    <br>
+    <p><small>Dein MitEsser - Portal</small></p>
+</div>
+</body>
+
+</html>

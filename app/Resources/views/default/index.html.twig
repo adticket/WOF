@@ -4,25 +4,50 @@
 
     <div class="jumbotron">
         <div class="container">
-            <h1>Hallo <small>{{ user.username }},</small></h1>
+            <h1>Hallo
+                <small>{{ user.username }},</small>
+            </h1>
             <p>und willkommen hier im MitEsser-Portal.</p>
         </div>
     </div>
 
     <div class="panel panel-default">
         <div class="panel-body">
-            <p>Trete Gruppen bei um mit deinen Freunden Essen zu gehen. In Zukunkft kommen noch viele weitere coole Features.
-                Bleibe gespannt!</p>
-            <p>Sollte es noch keine Gruppe geben der du beitreten magst kannst du einfach eine eigene Erstellen.</p>
-            <p>Pflege weitere Restaurants ein und versehe sie mit passenden Kategorien. Sollte mal keine passende Kategorie da
-                sein,</p>
-            <p>pflege sie einfach nach. Ganz einfach!</p>
+            <h2>Anleitung</h2>
+            <h4>Gruppen</h4>
+            <p>
+                In den Gruppen finden sich Freunde und Abteilungen zusammen,
+                um sich zum Essen zu verabreden. Füge deiner Gruppe Restaurants hinzu und erstelle Verabredungen.<br>
+                Sollte keine Gruppe da sein, der du beitreten möchtest, kannst du einfach eigene Erstellen.
+            </p>
+            <h4>Restaurants</h4>
+            <p>
+                Füge den Restaurants Kategorien hinzu (bis zu 5) um alles schnell zu zeigen was man dort Essen kann.
+                Sollten mal Daten nicht richtig sein -> Ändere Sie! Alle Restaurants sind "generell" für alle zugänglich & bearbeitbar.
+                Bevor du ein neues Restaurant erstellst, schaue nach ob wir es nicht schon in unserer gemeinsamen Liste haben.
+            </p>
+            <h4>Kategorien</h4>
+            <p>
+                Wir haben jetzt schon eine große gemeinsame Liste an Kategorien, aber sollte mal etwas fehlen um mit einem
+                Wort ein Restaurant zu beschreiben kannst du es einfach mal nachpflegen.
+            </p>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h2>Warum das Alles?</h2>
+                Ob das Portal nun genutz wird, oder nicht ist zweitrangig. In erster Linie war die Entwicklung des
+                Portals eine Übung für mich um mit den Technologien, die wir im CRM/Theatertool benutzen, vertraut zu machen.
+            </p>
             <div class="text-muted">TheDome</div>
         </div>
     </div>
 
-    {# just "meetings" doenst work well#}
-    {% if meetings.0 is not empty %}
+
+
+    {# just "meetings" propably meeting.0 doenst work well#}
+    {% if meetings is not empty %}
         <h3>Anstehende Verabredungen</h3>
         <div class="table-responsive">
             <table class="table">
@@ -36,32 +61,32 @@
                 <tbody>
                 {% for meeting in meetings %}
                     {% if meeting is not empty %}
-                    <tr class="active">
-                        <td><b>{{ meeting.0.group.name }}</b></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    {% for meet in meeting %}
-                        <tr{% if meet.visitAt|date("Y-m-d") == "now"|date("Y-m-d") %} class="danger" {% endif %}>
-                            <td>
-                                {{ meet.visitAt|date("d.m.Y H:i") }} Uhr
-                            </td>
-                            <td>{{ meet.restaurant.name }}</td>
-                            <td>
-                                <a class="btn btn-sm btn-default" role="button"
-                                   href="{% if 'http' not in meet.restaurant.website %}http://{% endif %}{{ meet.restaurant.website }}"
-                                   target="_blank">
-                                    <span class="glyphicon glyphicon glyphicon-globe" aria-hidden="true"></span>
-                                </a>
-
-                                <a class="btn btn-sm btn-default" role="button" target="_blank"
-                                   href="{{ meet.restaurant.genMapsLink }}">
-                                    <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-                                </a>
-                            </td>
+                        <tr class="active">
+                            <td><b>{{ meeting.0.group.name }}</b></td>
+                            <td></td>
+                            <td></td>
                         </tr>
-                    {% endfor %}
-                 {% endif %}
+                        {% for meet in meeting %}
+                            <tr{% if meet.visitAt|date("Y-m-d") == "now"|date("Y-m-d") %} class="danger" {% endif %}>
+                                <td>
+                                    {{ meet.visitAt|date("d.m.Y H:i") }} Uhr
+                                </td>
+                                <td>{{ meet.restaurant.name }}</td>
+                                <td>
+                                    <a class="btn btn-sm btn-default" role="button"
+                                       href="{% if 'http' not in meet.restaurant.website %}http://{% endif %}{{ meet.restaurant.website }}"
+                                       target="_blank">
+                                        <span class="glyphicon glyphicon glyphicon-globe" aria-hidden="true"></span>
+                                    </a>
+
+                                    <a class="btn btn-sm btn-default" role="button" target="_blank"
+                                       href="{{ meet.restaurant.genMapsLink }}">
+                                        <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
                 {% endfor %}
                 </tbody>
             </table>
