@@ -36,6 +36,8 @@ class RegisterController extends Controller
             $em->persist($user);
             $em->flush();
 
+            $this->sendRegisterInfo($user);
+
             return $this->redirectToRoute('login');
         }
 
@@ -44,4 +46,42 @@ class RegisterController extends Controller
                 'form' => $form->createView(),
                 ]);
     }
+
+    /**
+     * Send the information for a successfull registration
+     *
+     * @param User $user
+     */
+    private function sendRegisterInfo(User $user)
+    {
+        $transport = \Swift_SmtpTransport::newInstance()
+            ->setUsername('mitesserportal@gmail.com')
+            ->setPassword('portalpassword')
+            ->setHost('smtp.gmail.com')
+            ->setPort('587')// 587 for tls
+            ->setEncryption('tls');
+
+        //Create Message
+        $message = (new \Swift_Message())
+            ->setSubject('Registrierung war erfolgreich!')
+            ->setFrom('mitesserportal@gmail.com')
+            ->setTo($user->getEmail())
+            ->setReplyTo('domenic.gerhold@reservix.de')
+            ->setBody(
+                $this->renderView(
+                    ':mail:registerInfo.html.twig',
+                    [
+                        'username'  => $user->getUsername(),
+                    ]
+                ),
+                'text/html'
+            );
+
+        //Send Mail
+        $mailer = new \Swift_Mailer($transport);
+        $mailer->send($message);
+
+        return;
+    }
+
 }

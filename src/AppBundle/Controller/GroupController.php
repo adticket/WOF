@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Group;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Restaurant;
+use AppBundle\Entity\User;
 use AppBundle\Form\GroupType;
 use AppBundle\Form\MeetingType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -266,11 +267,11 @@ class GroupController extends Controller
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid())
             {
-                //TODO Send Mail to all UserInGroup
-
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($meeting);
                 $em->flush();
+
+                $this->sendMeetingInfo($group, $meeting, $restaurant = $meeting->getRestaurant());
 
                 return new RedirectResponse($this->generateUrl('group_details', ['group' => $group->getId()]));
             }
@@ -286,36 +287,9 @@ class GroupController extends Controller
         return new RedirectResponse($this->generateUrl('group_view'));
     }
 
-    /* public function createAction(Request $request)
-    {
-        // 1) build the form
-        $group = new Group();
-        $form = $this->createForm(GroupType::class, $group);
-
-        // 2) handle the submit
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            //3.1 add the creater in the pivot table
-            $user = $this->getUser();
-            $user->addGroup($group);
-            $group->setCreatedBy($user);
-
-
-            // 4) Save it!
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($group);
-            $em->flush();
-
-            return $this->redirectToRoute('group_view');
-        }
-
-        return $this->render('group/create.html.twig', ['form' => $form->createView(),]);
-    }
-     *
-    */
-
     /**
      * Check if the current user is in the given group
+     *
      * @param Group $group
      * @return bool
      */
@@ -326,6 +300,69 @@ class GroupController extends Controller
         }
 
         return false;
+    }
+
+    /**
+     * Preparation for sending Mails to the User in the $group
+     *
+     * @param Group $group
+     * @return array
+     */
+    private function getUsersEmails(Group $group)
+    {
+        $users = $group->getUsers();
+        $mails = [];
+        /** @var User $user */
+        foreach ($users as $user)
+        {
+            $mails[] = $user->getEmail();
+        }
+        return $mails;
+    }
+
+    /**
+     * send a info that a new meeting was created
+     *
+     * @param Group $group
+     * @param Meeting $meeting
+     * @param Restaurant $restaurant
+     */
+    private function sendMeetingInfo(Group $group, Meeting $meeting, Restaurant $restaurant)
+    {
+        //Get all mail addresses for
+        $mailadresses = $this->getUsersEmails($group);
+
+        $transport = \Swift_SmtpTransport::newInstance()
+            ->setUsername('mitesserportal@gmail.com')
+            ->setPassword('portalpassword')
+            ->setHost('smtp.gmail.com')
+            ->setPort('587')// 587 for tls
+            ->setEncryption('tls');
+
+        //Create Message
+        $message = (new \Swift_Message("test"))
+            ->setSubject($group->getName().' trifft sich zum Essen!')
+            ->setFrom('mitesserportal@gmail.com')
+            ->setTo($mailadresses)
+            ->setReplyTo('domenic.gerhold@reservix.de')
+            ->setBody(
+                $this->renderView(
+                    ':mail:meetingInfo.html.twig',
+                    [
+                        'username'  => 'zusammen',
+                        'group'     => $group,
+                        'meeting'   => $meeting,
+                        'restaurant'=> $restaurant,
+                    ]
+                ),
+                'text/html'
+            );
+
+        //Send Mail
+        $mailer = new \Swift_Mailer($transport);
+        $mailer->send($message);
+
+        return;
     }
 
 }
